@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+{% endblock %}
+{% block title %}Site settings{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h1>Settings</h1>
+</div>
+{% if not data %}
+{% set data = {"phone": "", "email": "", "language": {"uk": {"name": "", "description": "", "address": ""},"en":
+{"name": "",
+"description": "", "address": ""}}, "address": "", "instagram": "", "facebook": "", "tiktok": "", "schedule": ["",""]}
+%}
+{% endif %}
+<form action="{{ url_for('admin.settings') }}" method="post">
+    <div class="row crud">
+        <div class="row col s12">
+            <div class="input-field col s6">
+                <input type="text" name="uk_name" id="uk_name" placeholder="Type a site name"
+                    value="{{ data['language']['uk']['name'] }}" required>
+                <label for="uk_name">Site uk name</label>
+            </div>
+            <div class="input-field col s6">
+                <input type="text" name="en_name" id="en_name" placeholder="Type a site name"
+                    value="{{ data['language']['en']['name'] }}" required>
+                <label for="en_name">Site en name</label>
+            </div>
+        </div>
+        <div class="row col s12">
+            <div class="input-field col s12 m4">
+                <input type="text" name="phone_1" id="phone_1" placeholder="Type a site phone"
+                    value="{{ data['phone_1'] }}" required>
+                <label for="phone_1">Phone 1</label>
+            </div>
+            <div class="input-field col s12 m4">
+                <input type="text" name="phone_2" id="phone_2" placeholder="Type a site phone"
+                    value="{{ data['phone_2'] }}" required>
+                <label for="phone_2">Phone 2</label>
+            </div>
+            <div class="input-field col s12 m4">
+                <input type="email" name="email" id="email" placeholder="Type a site email" value="{{ data['email'] }}"
+                    required>
+                <label for="email">Email</label>
+            </div>
+        </div>
+        <div class="row s12">
+            <div class="input-field col s12 m6">
+                <textarea class="materialize-textarea" id="uk_description" name="uk_description"
+                    placeholder="Type a site description"
+                    required>{{ data['language']['uk']['description'] }}</textarea>
+                <label for="uk_description">Site uk description</label>
+            </div>
+            <div class="input-field col s12 m6">
+                <textarea class="materialize-textarea" id="uk_description" name="en_description"
+                    placeholder="Type a site description"
+                    required>{{ data['language']['en']['description'] }}</textarea>
+                <label for="en_description">Site en description</label>
+            </div>
+        </div>
+        <div class="row col s12">
+            <div class="input-field col s12 m6">
+                <input type="text" name="uk_address" id="uk_address" placeholder="Type a site address"
+                    value="{{ data['language']['uk']['address'] }}" required>
+                <label for="uk_address">Address uk</label>
+            </div>
+            <div cla <div class="input-field col s12 m6">
+                <input type="text" name="en_address" id="en_address" placeholder="Type a site address"
+                    value="{{ data['language']['en']['address'] }}" required>
+                <label for="en_address">Address en</label>
+            </div>
+        </div>
+        <div class="row col s12">
+            <div class="input-field col s12 m6 l4">
+                <input type="text" name="instagram" id="instagram" placeholder="Type a site instagram"
+                    value="{{ data['instagram'] }}" required>
+                <label for="instagram">Instagram</label>
+            </div>
+            <div class="input-field col s12 m6 l4">
+                <input type="text" name="facebook" id="facebook" placeholder="Type a site facebook"
+                    value="{{ data['facebook'] }}" required>
+                <label for="facebook">Facebook</label>
+            </div>
+            <div class="input-field col s12 m6 l4">
+                <input type="text" name="tiktok" id="tiktok" placeholder="Type a site tiktok"
+                    value="{{ data['tiktok'] }}" required>
+                <label for="tiktok">Tiktok</label>
+            </div>
+        </div>
+        <div class="row col s12">
+            <div class="col s10">
+                <h5>Schedule</h5>
+                <div class="input-field col s5">
+                    <input type="text" name="time_1" id="time_1" placeholder="Type a time on monday"
+                        value="{{ data['monday_time'] }}" required>
+                    <label for="time_1">Monday</label>
+                </div>
+                <div class="input-field col s5">
+                    <input type="text" name="time_2" id="time_2" placeholder="Type a time on other days"
+                        value="{{ data['other_days_time'] }}" required>
+                    <label for="time_2">Tuesday-Sunday</label>
+                </div>
+            </div>
+            <div class="col s2" style="text-align:right;">
+                <button class="btn" type="submit">Save</button>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+{% endblock %}
+{% block scripts %}
+<script>
+    IMask(document.getElementById('phone_1'), {
+        mask: '{+44}(000)000-00-00'
+    });
+    IMask(document.getElementById('phone_2'), {
+        mask: '{+44}(000)000-00-00'
+    });
+    let settings = {
+        mask: 'HH:MM - HH:MM',
+
+        blocks: {
+            HH: {
+                mask: IMask.MaskedRange,
+                from: 0,
+                to: 23
+            },
+
+            MM: {
+                mask: IMask.MaskedRange,
+                from: 0,
+                to: 59
+            },
+        }
+    }
+    IMask(document.getElementById('time_1'), settings);
+    IMask(document.getElementById('time_2'), settings);
+
+</script>
+{% endblock %}

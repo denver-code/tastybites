@@ -1,0 +1,114 @@
+<header class="navbar">
+    <nav>
+        <div class="nav-wrapper">
+            <a href="/" class="brand-logo left">
+                <img class="responsive-img" src="{{ url_for('static', filename='images/logo.svg') }}" alt="">
+                <h3>{{ info['language'][g.locale]['name'] }}</h3>
+            </a>
+            {% set url = request.url %}
+            <ul class="right hide-on-med-and-down">
+                <li>
+                    <a href="{{ url_for('website.index') }}" {% if 'delivery' not in url and 'menu' not in url
+                        and 'team' not in url and 'holl' not in url %}class="active" {% endif %}>{{_("Головна")}}</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('website.menu') }}" {% if 'menu' in url %}class="active" {% endif
+                        %}>{{_("Меню")}}</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('website.holl', code_name='ribs_holl') }}" {% if 'ribs_holl' in url %}class="active"
+                        {% endif %}>{{_("Реберня")}}</a>
+                </li>
+                <!-- <li>
+                    <a href="{{ url_for('website.shop') }}" {% if 'shop' in url %}class="active"
+                        {% endif %}>{{_("Крамниця")}}</a>
+                </li> -->
+                <li>
+
+                    <a href="{{ url_for('website.delivery') }}" {% if 'delivery' in url %}class="active" {% endif
+                        %}>{{_("Доставка їжі")}}</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('website.announces') }}" {% if 'team' in url %}class="active" {% endif
+                        %}>{{_("Анонси")}}</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('website.contacts') }}" {% if 'contacts' in url %}class="active" {% endif
+                        %}>{{_("Контакти")}}</a>
+                </li>
+                <li>
+                    <a class="modal-trigger" href="#modal_reserve">{{_("Забронювати")}}</a>
+                </li>
+                <li>
+                    <a class="modal-trigger" href="#modal_cart" id="cart" onclick="checkCart()">
+                    </a>
+                </li>
+                <!-- <li>
+                    <form action="{{ url_for('website.change_lang') }}" method="POST">
+                        {% if g.locale == "en" %}
+                        <input type="hidden" name="lang" value="uk">
+                        <button type="submit"><b>UK</b></button>
+                        {% else %}
+                        <input type="hidden" name="lang" value="en">
+                        <button type="submit"><b>EN</b></button>
+                        {% endif %}
+                    </form>
+                </li> -->
+            </ul>
+            <div class="menu-cart">
+                <a class="modal-trigger" href="#modal_cart" id="cart-mob" onclick="checkCart()">
+                </a>
+                <a href="#" data-target="mobile" class="sidenav-trigger">
+                    <i class="material-icons">menu</i>
+                </a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<ul class="sidenav" id="mobile">
+    <i class="material-icons close" onclick="$('#mobile').sidenav('close');">close</i>
+    <li>
+        <a href="{{ url_for('website.index') }}" {% if 'delivery' not in url and 'menu' not in url
+        and 'team' not in url and 'holl' not in url %}class="active" {% endif %}>{{_("Головна")}}</a>
+    </li>
+    <li>
+        <a href="{{ url_for('website.menu') }}" {% if 'menu' in url %}class="active" {% endif
+            %}>{{_("Меню")}}</a>
+    </li>
+    <li>
+        <a href="{{ url_for('website.holl', code_name='ribs_holl') }}" {% if 'ribs_holl' in url %}class="active"
+        {% endif %}>{{_("Реберня")}}</a>
+    </li>
+ <li>
+        <a href="{{ url_for('website.shop') }}" {% if 'shop' in url %}class="active"
+        {% endif %}>{{_("Крамниця")}}</a>
+    </li>    
+    <li>
+
+        <a href="{{ url_for('website.delivery') }}" {% if 'delivery' in url %}class="active" {% endif
+            %}>{{_("Доставка їжі")}}</a>
+    </li>
+    <li>
+        <a href="{{ url_for('website.announces') }}" {% if 'team' in url %}class="active" {% endif
+            %}>{{_("Анонси")}}</a>
+    </li>
+    <li>
+        <a href="{{ url_for('website.contacts') }}" {% if 'contacts' in url %}class="active" {% endif
+            %}>{{_("Контакти")}}</a>
+    </li>
+    <li>
+        <a class="modal-trigger" href="#modal_reserve">{{_("Забронювати")}}</a>
+    </li>
+    <li>
+        <form action="{{ url_for('website.change_lang') }}" method="POST">
+            {% if g.locale == "en" %}
+            <input type="hidden" name="lang" value="uk">
+            <button type="submit"><b>UK</b></button>
+            {% else %}
+            <input type="hidden" name="lang" value="en">
+            <button type="submit"><b>EN</b></button>
+            {% endif %}
+        </form>
+    </li>
+</ul>

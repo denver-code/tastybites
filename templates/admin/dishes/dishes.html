@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+{% endblock %}
+{% block title %}Dishes{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h1>All dishes</h1>
+    <a class="modal-trigger" href="{{ url_for('admin.create_dish') }}"><button class="btn">Create</button></a>
+</div>
+
+{% if data %}
+{% set col_bodies = data %}
+{% include 'includes/table.html' %}
+{% endif %}
+
+<div id="modal_del" class="modal">
+    <div class="modal-content">
+        <form action="" method="POST" id="del_form">
+            <h3>Deleting a dish</h3>
+            <p>Are you sure you want to delete the dish "<b id="target"></b>"?</p>
+            <input type="hidden" name="_method" value="DELETE">
+            <div class="buttons">
+                <button class="btn modal-close" type="button">Cancel</button>
+                <button class="red btn" type="submit">Delete</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/tablePagination.js') }}"></script>
+{% endblock %}

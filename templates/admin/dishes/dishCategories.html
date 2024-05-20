@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+{% endblock %}
+{% block title %}Dish Categories{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h1>All dish categories</h1>
+    <a class="modal-trigger" href="#modal_create"><button class="btn">Create</button></a>
+</div>
+
+{% set name_page = "category" %}
+{% if data %}
+{% set col_bodies = data %}
+{% include 'includes/table.html' %}
+{% endif %}
+
+<div id="modal_create" class="modal">
+    <div class="modal-content">
+        <form action="{{ url_for('admin.dish_categories') }}" method="POST">
+            <h3>Creating a dish category</h3>
+            <div class="input-field">
+                <input type="text" id="uk_name" name="uk_name" placeholder="Type dish category Tasty name" value=""
+                    required>
+                <label for="uk_name">Tasty name</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="en_name" name="en_name" placeholder="Type dish category english name" value=""
+                    required>
+                <label for="en_name">English name</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="code_name" name="code_name" placeholder="Type room code name" value="" required>
+                <label for="code_name">Code name</label>
+            </div>
+            <input type="hidden" name="type" id="type"></input>
+            <div class="input-field">
+                <select multiple onchange="changeSelect(event, '#type')">
+                    {% for type in types %}
+                    <option value="{{ type['id'] }}">{{ type['uk_type'] }} / {{ type['en_type'] }}</option>
+                    {% endfor %}
+                </select>
+                <label>Types</label>
+            </div>
+            <p>
+                <label>
+                    <input type="checkbox" id="isShow_true" onchange="toggle(['isShow_true','isShow_false']);"
+                        class="filled-in" checked="checked" name="isShow" />
+                    <span>is Show</span>
+                </label>
+                <input type='hidden' id="isShow_false" value='off' name='isShow'>
+            </p>
+            <div class="buttons">
+                <button class="btn modal-close" type="button">Cancel</button>
+                <button class="btn" type="submit">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="modal_edit" class="modal">
+    <div class="modal-content">
+        <form action="" method="POST" id="edit_category_form">
+            <h3>Editing a dish category</h3>
+            <input type="hidden" name="_method" value="PUT">
+            <div class="input-field">
+                <input type="text" id="e_uk_name" name="uk_name" placeholder="Type new dish category Tasty name"
+                    value="" required>
+                <label for="e_uk_name">Tasty name</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="e_en_name" name="en_name" placeholder="Type new dish category english name"
+                    value="" required>
+                <label for="e_en_name">English name</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="e_code_name" name="code_name" placeholder="Type new dish code name" value=""
+                    required>
+                <label for="e_code_name">Code name</label>
+            </div>
+            <input type="hidden" name="type" id="type_edit"></input>
+            <div class="input-field">
+                <select multiple required id="type-select"  onchange="changeSelect(event, '#type_edit')"></select>
+                <label>Types</label>
+            </div>
+            <p>
+                <label>
+                    <input type="checkbox" id="e_isShow_true" onchange="toggle(['e_isShow_true','e_isShow_false']);"
+                        class="filled-in" checked="checked" name="isShow" />
+                    <span>is Show</span>
+                </label>
+                <input type='hidden' id="e_isShow_false" value='off' name='isShow'>
+            </p>
+            <div class="buttons">
+                <button class="btn modal-close" type="button">Cancel</button>
+                <button class="btn" type="submit">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="modal_del" class="modal">
+    <div class="modal-content">
+        <form action="" method="POST" id="del_form">
+            <h3>Deleting a dish category</h3>
+            <p>Are you sure you want to delete the category dish "<b id="target"></b>"?</p>
+            <p>This will delete all dishes in this category!</p>
+            <input type="hidden" name="_method" value="DELETE">
+            <div class="buttons">
+                <button class="btn modal-close" type="button">Cancel</button>
+                <button class="red btn" type="submit">Delete</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script>
+    function changeSelect(event, target) {
+        var selectValues = $(event.target).val();
+        $(target).val(selectValues);
+    }
+    $(document).ready(function () {
+        $('select').formSelect();
+        document.getElementById('isShow_false').name = '';
+        document.getElementById('e_isShow_false').name = '';
+    });
+    function editDataToModal(code_name, data, type, isShow, types) {
+        document.getElementById("edit_category_form").action = "{{ url_for('admin.dishes', category_code='') }}" + code_name;
+        document.getElementById("e_uk_name").value = data['uk']['name'];
+        document.getElementById("e_en_name").value = data['en']['name'];
+        document.getElementById("e_code_name").value = code_name;
+        document.getElementById("e_isShow_true").checked = (isShow === "True") ? true : false;
+        select = document.getElementById("type-select")
+        let markup = ''
+        let ids = []
+        for (let i_t = 0; i_t < types.length; i_t++) {
+            for (let i = 0; i < type.length; i++) {
+                if (types[i_t]['uk_type'] === type[i]) {
+                    markup += `\n<option value="${types[i_t]['_id']}" selected>${types[i_t]['uk_type']} / ${types[i_t]['en_type']}</option>`
+                    ids.push(types[i_t]['_id'])
+                }
+            };
+            if (!ids.includes(types[i_t]['_id'])) {
+                markup += `\n<option value="${types[i_t]['_id']}">${types[i_t]['uk_type']} / ${types[i_t]['en_type']}</option>`
+            }
+            
+        };
+        console.log(markup)
+        document.getElementById('type_edit').value = ids
+        select.innerHTML = '';
+        select.innerHTML = markup;
+        $('select').formSelect();
+    };
+</script>
+<script src="{{ url_for('static', filename='js/tablePagination.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,4 @@
+User-agent: *
+disallow: /admin/
+
+Sitemap: http://www.hata-bagata.if.ua/sitemap.xml

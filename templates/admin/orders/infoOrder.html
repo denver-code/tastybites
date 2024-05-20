@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+{% endblock %}
+{% block title %}Edit order{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('admin.orders') }}">
+    <i class="back material-icons">keyboard_backspace</i>
+</a>
+{% set url = url_for(request.endpoint, **request.view_args) %}
+<form action="{{ url }}" method="post">
+    <input type="hidden" name="_method" value="PUT">
+    <div class="row crud">
+        <div class="col s12 m6 l4">
+            <div class="input-field">
+                <input type="text" id="client_email" value="{{ data['client_email'] }}" readonly>
+                <label for="client_name">Client email</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="client_name" value="{{ data['client_name'] }}" readonly>
+                <label for="client_name">Client name</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="client_phone" value="{{ data['client_phone'] }}" readonly>
+                <label for="client_phone">Client phone</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="client_comment" value="{{ data['client_comment'] }}" readonly>
+                <label for="client_comment">Client comment</label>
+            </div>
+        </div>
+        <div class="col s12 m6 l4">
+            <div class="input-field">
+                <input type="text" id="client_street" value="{{ data['street'] }}" readonly>
+                <label for="client_street">Client street</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="client_house" value="{{ data['house'] }}" readonly>
+                <label for="client_house">Client house</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="client_flat" value="{{ data['flat'] }}" readonly>
+                <label for="client_flat">Client flat</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="client_porch" value="{{ data['porch'] }}" readonly>
+                <label for="client_porch">Client porch</label>
+            </div>
+        </div>
+        <div class="col s12 m6 l4">
+            <ul>
+                <li><p>Cart:</p></li>
+                {% for key, value in data['cart'].items() %}
+                    {% for dish in dishes %}
+                        {% if dish['_id'] | int == key | int %}
+                            <li><b>{{ dish['language']['uk']['name'] }}</b> x <b>{{ value }} шт</b></li>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+                <p><b>Total: {{ data['total'] }} ₴</b></p>
+                <p><b>Sent At:</b> {{ data['sentAt'] }}</p>
+                <p><b>Date:</b> {{ data['date'] }}</p>
+                <p><b>Delivery:</b> {% if data['delivery'] %}Доставка{% else %}Самовивіз{% endif %}</p>
+                <p><b>Payment:</b> {{ data['payment'] }}</p>
+            <div class="input-field">
+                <select name="status">
+                    {% for status in data_statuses %}
+                        {% if status == data['status'] %}
+                            <option value="{{ status }}" selected>{{ data['status'] }}</option>
+                        {% else %}
+                            <option value="{{ status }}">{{ status }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <label>Order status</label>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m6 l4" style="text-align:right;">
+        <button class="btn" type="submit">Save</button>
+    </div>
+
+    </div>
+</form>
+
+{% endblock %}
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        $('select').formSelect();
+        document.getElementById('isShow_false').name = '';
+    });
+</script>
+{% endblock %}

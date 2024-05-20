@@ -1,0 +1,135 @@
+{% extends "website_base.html" %}
+{% block head %}
+<meta name="description" content="Найсмачніші традиційні страви української кухні в затишній атмосфері.">
+<meta name="keywords"
+    content="українська кухня, ресторан української кухні, ресторан української кухні франківськ, ресторан франківськ, TastyBites">
+<script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "http://www.hata-bagata.if.ua/favicon.ico",
+            "url": "http://www.hata-bagata.if.ua/",
+            "logo": "http://www.hata-bagata.if.ua/static/images/logo.svg",
+            "sameAs": [
+                "https://www.facebook.com/hatabagata/",
+                "https://www.instagram.com/hatabagata/?igshid=18ijms1djnuew"
+            ]
+        }
+        </script>
+{% endblock %}
+{% block title %}{{ _('Ресторан української кухні') }}{% endblock %}
+
+{% from 'includes/holls.html' import holls %}
+
+{% block content %}
+
+{% set reviews_img = [url_for('static', filename='objects/Reviews/img1.png'), url_for('static', filename='objects/Reviews/img2.png'),
+url_for('static', filename='objects/Reviews/img3.png'), url_for('static', filename='objects/Reviews/img4.png'), url_for('static', filename='objects/Reviews/img5.png'),
+url_for('static', filename='objects/Reviews/img6.png'), url_for('static', filename='objects/Reviews/img7.png'), url_for('static', filename='objects/Reviews/img8.png')] %}
+
+<div class="row row-slider">
+    {% include "includes/slider.html" %}
+</div>
+<div class="bg">
+    <div class="wrapper">
+        <section class="all-index-holls">
+            <div class="page-title">
+                <h1>{{ _("Про нас")| upper }}</h1>
+                <p class="page-description">
+                    {{ info['language'][g.locale]['description'] }}
+                </p>
+            </div>
+        </section>
+
+        {% for item in holls %}
+        <section class="index-holl  {{ item['code_name'] }}-index-holl__section">
+            <div class="title">
+                <a href="{{ url_for('website.holl', code_name=item['code_name']) }}">
+                    <h3>{{ item['language'][g.locale]['name'] | upper }}</h3>
+                </a>
+            </div>
+            <div class="description">
+                {% if item['code_name'] == 'children_room' %}<p>з 12:00 до 18:00</p>{% endif %}
+                <p>{{ item['language'][g.locale]['description'] }}</p>
+            </div>
+            <div class="index-holls-container {{ item['code_name'] }}">
+                <div>
+                    <img loading="lazy" class="lazyload"
+                        data-src="{{ item['gallery'][0] if item['gallery'][0] else url_for('static', filename='images/black.jpg') }}"
+                        alt="{{ item['language'][g.locale]['name'] }}">
+                </div>
+                <div>
+                    <img loading="lazy" class="lazyload"
+                        data-src="{{ item['gallery'][1] if item['gallery'][1] else url_for('static', filename='images/black.jpg') }}"
+                        alt="{{ item['language'][g.locale]['name'] }}">
+                </div>
+                <div>
+                    <img loading="lazy" class="lazyload"
+                        data-src="{{ item['gallery'][2] if item['gallery'][2] else url_for('static', filename='images/black.jpg') }}"
+                        alt="{{ item['language'][g.locale]['name'] }}">
+                </div>
+                <div>
+                    <img loading="lazy" class="lazyload"
+                        data-src="{{ item['gallery'][3] if item['gallery'][3] else url_for('static', filename='images/black.jpg') }}"
+                        alt="{{ item['language'][g.locale]['name'] }}">
+                </div>
+                <div>
+                    <div class="button">
+                        <a class=" modal-trigger" href="#modal_{{ item['code_name'] }}">{{ _('Детальніше') }}</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endfor %}
+
+    </div>
+</div>
+{% for item in holls %}
+<div id="modal_{{ item['code_name'] }}" class="modal modal-gallery">
+    <i class="material-icons close" onclick="$(`#modal_{{ item['code_name'] }}`).modal('close');">close</i>
+    <div class="slider center col s12" id=modal-slider>
+        <div class="slider__wrapper">
+            <div class="slider__items">
+                {% for image in item['gallery'] %}
+                <div class="slider__item">
+                    <img loading="lazy" class="lazyload" data-src="{{ image }}"
+                        alt="Gallery {{ item['language'][g.locale]['name'] }} image {{ loop.index }}">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/mixitup.min.js') }}"></script>
+<script>
+    $(document).ready(function () {
+        $('.carousel.carousel-slider').carousel({
+            indicators: true
+        });
+    });
+    document.querySelectorAll('#modal-slider').forEach((item, index) => {
+        if (item.querySelectorAll('.slider__item').length > 1) {
+            const id = 'slider-' + index;
+            item.id = id;
+            new SimpleAdaptiveSlider('#' + id, {
+                loop: true,
+                swipe: true
+            });
+        }
+    });
+    document.querySelectorAll('#reviews-slider').forEach((item, index) => {
+        if (item.querySelectorAll('.slider__item').length > 1) {
+            const id = 'slider-' + index;
+            item.id = id;
+            new SimpleAdaptiveSlider('#' + id, {
+                loop: true,
+                swipe: true
+            });
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    {% include 'includes/head.html' %}
+    {% block head %}{% endblock %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+    <title>{% block title required %}{% endblock %} - {{ _('TastyBites') }}</title>
+</head>
+
+<body>
+    {% include 'includes/sidebar.html' %}
+    <main>
+        {% set messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="flashes">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% block content required %}{% endblock %}
+    </main>
+    <script src="{{ url_for('static', filename='js/materialize.min.js') }}"></script>
+    <script src="https://unpkg.com/imask"></script>
+    <script>
+        $(document).ready(function () {
+            $('.modal').modal();
+            if (document.querySelectorAll('.flashes')[0]) {
+                let msg = document.querySelectorAll('.flashes')[0].getElementsByTagName("li");
+                M.toast({
+                    html: `<b style="color:red;">${msg[0].innerText}</b>`,
+                    classes: "rounded",
+                });
+            };
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+    <script src="{{ url_for('static', filename='js/adminHelper.js') }}"></script>
+</body>
+
+</html>

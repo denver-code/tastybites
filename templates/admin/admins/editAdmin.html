@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+{% endblock %}
+{% block title %}Edit admin{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('admin.admins') }}">
+    <i class="back material-icons">keyboard_backspace</i>
+</a>
+{% set url = url_for(request.endpoint, **request.view_args) %}
+<form action="{{ url }}" method="post">
+    <input type="hidden" name="_method" value="PUT">
+    <div class="row crud">
+
+        <div class="input-field col s12 m6 l4">
+            <input type="text" id="username" name="username" placeholder="Type a admin username" value="{{ data['username'] }}">
+            <label for="username">Username</label>
+        </div>
+        <div class="input-field col s12 m6 l4">
+            <input type="text" id="name" name="name" placeholder="Type a admin name" value="{{ data['name'] }}">
+            <label for="name">Name</label>
+        </div>
+        <div class="input-field col s12 m6 l4">
+            <input type="text" id="lastname" name="lastname" placeholder="Type a admin lastname" value="{{ data['lastname'] }}">
+            <label for="lastname">Lastname</label>
+        </div>
+        <div class="input-field col s12 m6 l4">
+            <input type="text" id="surname" name="surname" placeholder="Type a admin surname" value="{{ data['surname'] }}">
+            <label for="surname">Surname</label>
+        </div>
+        <div class="input-field col s12 m6 l4">
+            <input type="email" id="email" name="email" placeholder="Type a admin email" required value="{{ data['email'] }}">
+            <label for="email">Email</label>
+        </div>
+        <div class="input-field col s12 m6 l4">
+            <input type="text" id="password" name="password" placeholder="********" value="{{ data['password'] }}">
+            <label for="password">Password</label>
+        </div>
+    </div>
+    <div class="col s12 m6 l4" style="text-align:right;">
+        <button class="btn" type="submit">Save</button>
+    </div>
+
+</form>
+
+{% endblock %}
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        $('select').formSelect();
+        document.getElementById('isShow_false').name = '';
+    });
+</script>
+{% endblock %}

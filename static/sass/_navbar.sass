@@ -1,0 +1,111 @@
+header
+    max-width: 1920px
+    margin: 0 auto
+    width: 100%
+    position: absolute
+    z-index: 10
+    nav
+        display: flex
+        background-color: transparent
+        box-shadow: none
+        height: 76px
+        line-height: 76px
+        @media screen and ( max-width: 1320px )
+            height: 66px
+            line-height: 66px
+        .nav-wrapper
+            white-space: nowrap  !important
+            font-family: "Montserrat Medium"
+            width: 100%
+            margin: auto 4vw auto 4vw
+            @media screen and ( max-width: 1320px )
+                margin: auto 1vw auto 1vw
+                .brand-logo
+                    img
+                        height: 100%
+                    h3
+                        line-height: 74px
+                #cart
+                    &::after
+                        margin-top: -8px
+                    svg
+                        margin-bottom: -3px
+            .sidenav-trigger
+                float: right
+            .brand-logo
+                display: flex;
+                h3
+                    font-family: "Ruslan Regular"
+                    margin: auto auto auto 10px
+                    line-height: 80px
+            a
+                font-family: "Montserrat Medium"
+                +adaptiv-font(18, 12)
+                &.active
+                    font-weight: bold
+                &:hover
+                    background-color: transparent
+                    font-weight: bold
+            button
+                background-color: transparent
+                border: none
+                color: $text-color-2
+                cursor: pointer
+                &:focus
+                    background-color: transparent
+            #cart, #cart-mob
+                svg.active-cart
+                    fill: $bg-color-1
+                    margin-bottom: -5.5px
+                svg.empty-cart
+                    stroke: $bg-color-1
+                    margin-bottom: -7px
+                @media screen and ( max-width: 799px )
+                    a
+                        font-size: 20px
+            .menu-cart
+                display: flex
+                float: right
+                .sidenav-trigger
+                    i
+                        height: 66px
+                        line-height: 66px
+        div:not(:first-child)
+            text-align: center
+            #cart-mob
+                display: none
+                @media screen and ( max-width: 1320px )
+                    display: block
+    &.fixed
+        position: fixed
+        background-color: $bg-color-1
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25)
+        nav
+            div
+                color: $accent-color
+                a, button
+                    color: $accent-color
+                #cart, #cart-mob
+                    svg.active-cart
+                        fill: $accent-color
+                    svg.empty-cart
+                        stroke: $accent-color
+#mobile
+    .close
+        position: absolute
+        right: 10px
+        top: 10px
+    li a
+        color: $accent-color
+        font-family: "Montserrat Medium"
+        +adaptiv-font(18, 12)
+        &.active
+            font-weight: bold
+    button
+        background-color: transparent
+        border: none
+        color: $accent-color
+        cursor: pointer
+        padding: 0 32px
+        &:focus
+            background-color: transparent

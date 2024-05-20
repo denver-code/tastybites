@@ -1,0 +1,14 @@
+{% extends "website_base.html" %}
+{% block head %}
+{% endblock %}
+{% block title %}{{ _('Сторінку не знайдено') }}{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+    <h1 class="center-align" style="font-size: 50px;">404</h1>
+    <h3 class="center-align">{{ _("Сторінку не знайдено") }}</h3>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>{% include 'js/websiteHelper.js' %}</script>
+{% endblock %}

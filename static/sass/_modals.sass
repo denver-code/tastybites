@@ -1,0 +1,361 @@
+body
+    .dropdown-content
+        li>span, li>a
+            color: $accent-color
+    main
+        .modal
+            background-color: $bg-color-1
+            @media screen and ( max-width: 450px )
+                min-width: 100%
+            .modal-overlay
+                height: 160%
+            .close
+                    position: absolute
+                    right: 10px
+                    top: 10px
+                    color: $text-color-3
+                    cursor: pointer
+            &.datepicker-modal
+                input
+                    border: none !important
+                .datepicker-date-display
+                    span
+                        color: $text-color-2
+                .datepicker-day-button
+                    line-height: 38px
+                .datepicker-controls, .datepicker-footer, .datepicker-table
+                    max-width: 260px
+                    width: 100%
+                .select-dropdown.dropdown-trigger
+                    padding: 0
+                .datepicker-footer
+                    button
+                        color: $accent-color
+                .datepicker-table
+                    td
+                        &.is-today
+                            color: $accent-color
+                            +adaptiv-font(15,11)
+                        &.is-selected
+                            background-color: $accent-color
+                        &.is-today.is-selected
+                            color: $text-color-2
+                .modal-content.datepicker-container
+                    flex-direction: column
+                    -webkit-flex-direction: column
+                    .datepicker-date-display
+                        flex: 0 1 100px
+                        -webkit-flex: 0 1 100px
+                        background-color: $accent-color
+                        span
+                            +adaptiv-font(15,11)
+                td, th, td button
+                    border-radius: 10px
+                    +adaptiv-font(15,12)
+            &.modal-gallery
+                top: 50px !important
+                max-height: calc(100vw/2.3)
+                max-width: 70%
+                height: 100%
+                width: 100%
+                padding: 0 10px
+                @media screen and ( max-width: 997px )
+                    max-width: 90%
+                    max-height: calc(100vw/1.8)
+                .material-icons.close
+                    z-index: 1000
+                .slider
+                    max-width: 100%
+                    max-height: 100%
+                    .slider__wrapper
+                        height: 100%
+                        background-color: $bg-color-1
+                        .slider__items
+                            height: 100%
+                            display: flex
+                            img
+                                filter: none
+                                object-fit: contain
+                                width: auto
+                                height: 100%
+                                padding: 4% 0
+                    .slider__indicators
+                        .slider__indicator
+                            width: 12px
+                            height: 12px
+                            background-color: $text-color-1
+                            &.slider__indicator_active
+                                background-color: $accent-color
+            &.modal-reserve
+                max-width: 440px
+                max-height: 100%
+                overflow-y: auto
+                h3
+                    margin: 12px 0 28px 0
+                    +adaptiv-font(21,16)
+            &.modal-cart
+                max-width: 550px
+                max-height: 100%
+                overflow-x: hidden
+                li.disabled span
+                    text-decoration: line-through
+                span
+                    color: $text-color-3
+                    +adaptiv-font(16,12)
+                .select-delivery
+                    border-top: 1px solid $text-color-3
+                    padding-top: 25px
+                    padding-bottom: 10px
+                    span
+                        cursor: pointer
+                        &.active
+                            color: $accent-color
+                    i
+                        vertical-align: middle
+                        margin-right: 5px
+                .cart-item
+                    height: 100%
+                    max-height: 92px
+                    padding-top: 12px
+                    margin-bottom: 25px;
+                    border-top: 1px solid $text-color-3
+                    .col
+                        padding-right: 0
+                    .s3
+                        padding: 0 0
+                    .s9
+                        padding-left: 0
+                    h3
+                        margin-bottom: 0
+                        color: $text-color-3
+                        +adaptiv-font(16,12)
+                    p
+                        font-family: 'Montserrat Medium'
+                    span
+                        &.delete
+                            font-family: 'Montserrat Bold'
+                            color: $accent-color
+                            cursor: pointer
+                        &.ingredients
+                            overflow: hidden
+                            font-family: 'Montserrat Regular'
+                            text-overflow: ellipsis
+                            white-space: pre
+                            +adaptiv-font(15,11)
+                            
+                    img
+                        height: 92px
+                        width: 92px
+                    .cart-item-detail
+                        display: grid
+                        grid-template-columns: 1fr 70px 20px
+                        grid-template-rows: 2fr 2fr 1fr
+                        height: 100%
+                        max-height: 92px
+                        padding-left: 10px
+                        h3
+                            grid-column-start: 1
+                            grid-column-end: 3
+                            grid-row-start: 1
+                            grid-row-end: 2
+                            margin: 0
+                            text-overflow: ellipsis;
+                        .delete
+                            grid-column-start: 3
+                            grid-column-end: 4
+                            grid-row-start: 1
+                            grid-row-end: 2
+                            text-align: right
+                        .ingredients
+                            grid-column-start: 1
+                            grid-column-end: 4
+                            grid-row-start: 2
+                            grid-row-end: 3
+                            text-overflow: ellipsis;
+                        .price
+                            grid-column-start: 1
+                            grid-column-end: 2
+                            grid-row-start: 3
+                            grid-row-end: 4
+                            align-self: end
+                            p
+                                margin: 0
+                                padding-bottom: 5px
+                                +adaptiv-font(16,12)
+                        .count
+                            grid-column-start: 2
+                            grid-column-end: 4
+                            grid-row-start: 3
+                            grid-row-end: 4
+                            align-self: end
+                            text-align: right
+                            .numbers-field
+                                margin: 0
+                                height: 25px
+                                margin-top: auto
+                                vertical-align: middle
+                #dish-cart
+                    overflow-y: scroll
+                    max-height: 355px
+                h3
+                    margin-left: 8%
+                b
+                    font-family: 'Montserrat Medium'
+                #address
+                    div:first-child
+                        margin-bottom: 0
+                    div:last-child
+                        display: flex
+                        justify-content: space-evenly
+                        margin-top: 0
+                        input:first-child
+                            margin-right: 10px
+                        input:last-child
+                            margin-left: 10px
+                .payment, .detail-delivery
+                    max-width: 50%
+                    label
+                        +adaptiv-font(16,12)
+                .select-wrapper, #address div
+                    li
+                        background-color: $bg-color-1
+                        &:hover
+                            filter: brightness(95%)
+                        span
+                            font-family: 'Montserrat Regular'
+                .select-wrapper
+                    padding-top: 2px
+                    svg
+                        margin-top: 17px
+                .suma-container
+                    p
+                        margin: 0
+                        span
+                            font-weight: bold
+                            +adaptiv-font(17,15)
+            &.modal-reserve, &.modal-cart
+                top: 0 !important
+                h3.head
+                    margin-top: 30px
+                button
+                    +adaptiv-font(17,15)
+                .form-reserve, .form-cart, #dish-cart
+                    margin: auto 8%
+                label
+                    +adaptiv-font(18,14)
+                input
+                    box-sizing: border-box
+                    margin-top: 8px
+                    height: 38px
+                    outline: none
+                    padding: 6px
+                    border: 1px solid #BCBCBC
+                    border-radius: 8px
+                    +adaptiv-font(14,12)
+                .input-group
+                    input[type='button']
+                        -webkit-appearance: button
+                        cursor: pointer
+                        background-color: #eeeeee
+                        width: auto
+                        transition: all 300ms ease
+                        min-width: 20px
+                    .button-minus,
+                    .button-plus
+                        font-weight: bold
+                        height: 38px
+                        padding: 0
+                        width: 20px
+                        position: relative
+                        border: none !important
+                        background-color: transparent !important
+                        color: $text-color-3
+                        text-align: center
+                    .numbers-field
+                        margin-top: 0
+                        position: relative
+                        text-align: center
+                        width: 40px
+                        display: inline-block
+                        resize: vertical
+                    input[type="number"]
+                        -moz-appearance: textfield
+                        -webkit-appearance: none
+                    input::-webkit-outer-spin-button,
+                    input::-webkit-inner-spin-button
+                        -webkit-appearance: none
+            &#modal_dish
+                max-width: 900px
+                max-height: 450px
+                width: 100%
+                height: 100%
+                top: 20% !important
+                background-color: $bg-color-1
+                overflow: hidden
+                .dish-input-container
+                    input[type='button']
+                        -webkit-appearance: button
+                        cursor: pointer
+                        background-color: #eeeeee
+                        width: auto
+                        transition: all 300ms ease
+                        min-width: 20px
+                    .button-minus,
+                    .button-plus
+                        font-weight: bold
+                        height: 38px
+                        padding: 0
+                        width: 20px
+                        position: relative
+                        border: none !important
+                        background-color: transparent !important
+                        color: $text-color-3
+                        text-align: center
+                    .numbers-field
+                        margin-top: 0
+                        position: relative
+                        text-align: center
+                        width: 40px
+                        display: inline-block
+                        resize: vertical
+                    input[type="number"]
+                        -moz-appearance: textfield
+                        -webkit-appearance: none
+                    input[type="number"]:disabled
+                        color: $text-color-3
+                        border-bottom: 1px solid $text-color-3
+                    input::-webkit-outer-spin-button,
+                    input::-webkit-inner-spin-button
+                        -webkit-appearance: none
+                @media screen and ( max-width: 800px )
+                    max-height: 600px
+            .modal-image
+                padding: 0
+                max-width: 100%
+                max-height: 100%
+                height: 100%
+                img
+                    padding: 0
+                    height: 100%
+                    width: 100%
+                    object-fit: cover
+                @media screen and ( max-width: 800px )
+                    height: auto
+                    img
+                        display: block
+                        margin: 0 auto
+                        margin-top: 30px
+                        max-width: 300px
+                        max-height: 300px
+            .modal-description
+                padding: 3vw
+                span, b
+                    color: $text-color-3
+                    +adaptiv-font(17,13)
+                p
+                    margin-top: 0
+                    line-height: 20px
+                    +adaptiv-font(17,13)
+                button
+                    margin-top: 10px
+

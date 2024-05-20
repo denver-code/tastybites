@@ -1,0 +1,53 @@
+<div class="sidebar">
+    <h2>Area 51</h2>
+    {% set url = request.url %}
+    <ul>
+        <li>
+            <a class="{% if 'dish' in url %}active{% endif %}" href="{{ url_for('admin.dish_categories') }}">
+                <i class="material-icons prefix">restaurant</i>
+                Dishes
+            </a>
+        </li>
+        <li>
+            <a class="{% if 'orders' in url %}active{% endif %}" href="{{ url_for('admin.orders') }}">
+                <i class="material-icons prefix">assignment</i>
+                Orders
+            </a>
+        </li>
+        <li>
+            <a class="{% if 'reservations' in url %}active{% endif %}" href="{{ url_for('admin.reservations') }}">
+                <i class="material-icons prefix">restore</i>
+                Reservations
+            </a>
+        </li>
+        <li>
+            <a class="{% if 'sliders' in url %}active{% endif %}" href="{{ url_for('admin.sliders') }}">
+                <i class="material-icons prefix">slideshow</i>
+                Slider
+            </a>
+        </li>
+        <li>
+            <a class="{% if 'announces' in url %}active{% endif %}" href="{{ url_for('admin.announces') }}">
+                <i class="material-icons prefix">supervised_user_circle</i>
+                Announces
+            </a>
+        </li>
+        <li>
+            <a class="{% if 'admins' in url %}active{% endif %}" href="{{ url_for('admin.admins') }}">
+                <i class="material-icons prefix">people</i>
+                Admins
+            </a>
+        </li>
+        <li>
+            <a class="{% if 'settings' in url %}active{% endif %}" href="{{ url_for('admin.settings') }}">
+                <i class="material-icons prefix">settings</i>
+                Settings
+            </a>
+        </li>
+        <li>
+            <a class="{% if 'logout' in url %}active{% endif %}" href="{{ url_for('admin.logout') }}">
+                <i class="material-icons prefix">exit_to_app</i>
+                LogOut</a>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,26 @@
+@import 'main'
+    
+body
+    background-color: $bg-color-2
+    min-height: 100vh
+    main
+        display: flex
+        .block
+            min-height: 100vh
+            max-width: 520px
+            width: 100%
+            background-color: $bg-color-1
+            display: block
+            margin-left: auto
+            padding: 50px
+            h1
+                font-weight: bold;
+                margin-top: 150px
+                margin-bottom: 50px
+                +adaptiv-font(55,40)
+            button
+                width: 100%
+                border-radius: 25px
+                margin-top: 40px
+        .flashes
+                color: red

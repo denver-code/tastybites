@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    {% include 'includes/head.html' %}
+    <script>
+        dataLayer = [];
+    </script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5V9LSDC');
+    </script>
+    <!-- End Google Tag Manager -->
+    {% block head %}{% endblock %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/website_styles.css') }}">
+    <title>{% block title required %}{% endblock %} - </title>
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5V9LSDC"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    {% include 'includes/navbar.html' %}
+    <main>
+        <div class="preloader">
+            <img class="preloader__image" src="{{ url_for('static', filename='images/logo.svg') }}" alt="Логотип">
+        </div>
+        {% set messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="flashes">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <script>
+            let True = true
+            let False = false
+        </script>
+        {% block content required %}{% endblock %}
+        <div id="modal_reserve" class="modal modal-reserve">
+            <i class="material-icons close" onclick="$('#modal_reserve').modal('close');">close</i>
+            <img class="responsive-img" src="{{ url_for('static', filename='/images/reserve.jpg') }}"
+                alt="Reserve image">
+            <h3 class="center-align">{{ _("Бронювання") | upper }}</h3>
+            <form action="{{ url_for('website.reserve') }}" class="form-reserve" method="POST">
+                <div class="row input-field">
+                    <input class="col s12" type="text" name="name" id="name" placeholder='{{ _("Ваше ім’я") }}'
+                        required>
+                    <label for="name">{{ _("Ім'я") }}</label>
+                </div>
+                <div class="row input-field">
+                    <input class="datepicker col s6" type="text" name="date" id="date"
+                        placeholder='{{ _("Дата бронювання") }}' required readonly>
+                    <label for="date">{{ _("Дата") }}</label>
+                </div>
+                <div class="row input-field">
+                    <input class="col s5" type="text" name="time" id="time" placeholder='{{ _("З якої години") }}'
+                        required>
+                    <label for="time">{{ _("Час") }}</label>
+                </div>
+                <div class="row input-field input-group">
+                    <label for="persons">{{ _("Кількість персон") }}</label>
+                    <input type="button" value="-" onclick="decrementValue('persons', false)" class="button-minus"
+                        data-field="persons">
+                    <input type="number" step="1" min="1" max="200" value="1" name="persons" id="persons"
+                        class="numbers-field" onkeyup="checkNum('persons')">
+                    <input type="button" value="+" onclick="incrementValue('persons', false)" class="button-plus"
+                        data-field="persons">
+                </div>
+                <div class="row input-field">
+                    <input class="col s12" type="text" name="comment" id="comment"
+                        placeholder='{{ _("Ваші побажання") }}' required>
+                    <label for="comment">{{ _("Побажання") }}</label>
+                </div>
+                <div class="row input-field">
+                    <input class="col s12" type="text" name="phone" id="phone" placeholder="44 099 999 99 99" required>
+                    <label for="phone">{{ _("Телефон") }}</label>
+                </div>
+                <div class="row">
+                    <button class="btn col s12" type="submit">{{ _("Забронювати стіл") }}</button>
+                </div>
+            </form>
+        </div>
+        <div id="modal_cart" class="modal modal-cart">
+            <i class="material-icons close" onclick="$('#modal_cart').modal('close');">close</i>
+            <h3 class="head">{{ _('Ваше замовлення') }}:</h3>
+            <div id="dish-cart"></div>
+            <form action="{{ url_for('website.order') }}" class="form-cart" method="POST" onsubmit="orderCart()">
+                <input type="hidden" name="cart" id="input-cart">
+                <input type="hidden" name="delivery" id="delivery" value="true">
+                <div class="row select-delivery">
+                    <span id="cartDelivery" onclick="formDelivery()" class="active col s6 center-align">
+                        <i class="material-icons active">local_shipping</i>{{ _('Доставка') }}
+                    </span>
+                    <span id="cartPickup" onclick="formPickup()" class=" col s6 center-align">
+                        <i class="material-icons">store</i>{{ _('Самовивіз') }}
+                    </span>
+                </div>
+                <div class="row input-field">
+                    <input class="col s12" type="text" name="name" id="name_cart" placeholder='{{ _("Ваше ім’я") }}'
+                        required>
+                    <label for="name_cart">{{ _("Ім'я") }}</label>
+                </div>
+                <div class="row input-field">
+                    <input class="col s12" type="text" name="phone" id="phone_cart" placeholder="44 099 999 99 99"
+                        required>
+                    <label for="phone_cart">{{ _("Телефон") }}</label>
+                </div>
+                <div class="row input-field">
+                    <input class="col s12" type="email" name="email" id="email"
+                        placeholder='{{ _("Ваша електронна пошта") }}' required>
+                    <label for="email">{{ _("Електронна пошта") }}</label>
+                </div>
+                <div id="address">
+                    <div class="row input-field">
+                        <input class="col s12 autocomplete" type="text" name="street" id="street"
+                            placeholder="{{ _('Ваша вулиця') }}" required>
+                        <label for="street">{{ _("Вулиця") }}</label>
+                    </div>
+                    <div class="col s12">
+                        <input type="text" name="house" placeholder="{{ _('Будинок') }}">
+                        <input type="text" name="flat" placeholder="{{ _('Квартира') }}">
+                        <input type="text" name="porch" placeholder="{{ _('Під\'їзд') }}">
+                    </div>
+                </div>
+                <div class="row input-field">
+                    <input class="col s12" type="text" name="comment" id="comment_cart"
+                        placeholder='{{ _("Коментар до замовлення") }}' required>
+                    <label for="comment_cart">{{ _("Коментар") }}</label>
+                </div>
+                <div class="row input-field">
+                    <label for="date_cart">{{ _("Дата та час") }}</label>
+                    <input class="datepicker col s5" type="text" name="date" id="date_cart"
+                        placeholder='{{ _("Дата доставки") }}' required readonly>
+                    <div class="col s2"></div>
+                    <input class="col s5" type="text" name="time" id="time_cart" placeholder='{{ _("Час доставки") }}'
+                        required>
+                </div>
+                <div id="type_delivery" class="input-field detail-delivery">
+                    <select name="detail_delivery" required>
+                        <option value="porch" selected>{{ _('До Під\'їзду') }} 50 {{ _('GBP') }}</option>
+                        <option value="door">{{ _('До дверей') }} 55 {{ _('GBP') }}</option>
+                    </select>
+                    <label>{{ _('Тип доставки') }}</label>
+                </div>
+                <div class="input-field payment">
+                    <select name="payment" required>
+                        <option value="cash" selected>{{ _('Готівкою кур\'еру') }}</option>
+                        <option disabled value="card">{{ _('Карткою кур\'єру') }}</option>
+                    </select>
+                    <label>{{ _('Оплата') }}</label>
+                </div>
+                <div class="row center-align suma-container">
+                    <p>{{ _('Усього') }}</p>
+                    <p><span id="suma"></span></p>
+                    <input type="hidden" name="total" id="input_total">
+                    
+                </div>
+                <div class="row">
+                    <center><p style="color:#9F0916; font-size: calc(15px + 5 * ((100vw - 320px) / 2000));">
+                        {{ _('Ціна пакувальної тари обраховується окремо від вартості страв') }}
+                    </p></center>
+                    <button class="btn col s12" type="submit">{{ _("Замовити") }}</button>
+                </div>
+            </form>
+        </div>
+        <button id="call-btn" class="btn">
+            <a href="tel:{{ info['phone_1'] }}" title="{{ _('Замовити доставку') }}">
+            <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="100%"
+                height="100%" viewBox="0 0 1280.000000 1280.000000" preserveAspectRatio="xMidYMid meet">
+                <g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+                    <path d="M6145 12794 c-216 -13 -391 -28 -530 -45 -995 -122 -1927 -467 -2760
+           -1022 -907 -604 -1648 -1433 -2146 -2402 -395 -769 -615 -1549 -690 -2450 -17
+           -193 -17 -757 0 -950 75 -901 295 -1681 690 -2450 610 -1187 1579 -2156 2766
+           -2766 769 -395 1549 -615 2450 -690 193 -17 757 -17 950 0 901 75 1681 295
+           2450 690 1187 610 2156 1579 2766 2766 395 769 615 1549 690 2450 17 193 17
+           757 0 950 -75 901 -295 1681 -690 2450 -610 1187 -1579 2156 -2766 2766 -753
+           387 -1531 610 -2390 684 -164 15 -666 27 -790 19z m739 -779 c1310 -112 2519
+           -671 3464 -1599 980 -963 1561 -2210 1673 -3591 15 -193 15 -657 0 -850 -110
+           -1350 -664 -2567 -1605 -3523 -965 -981 -2206 -1559 -3591 -1673 -193 -16
+           -657 -16 -850 0 -1386 114 -2628 692 -3591 1672 -943 961 -1493 2167 -1605
+           3524 -16 193 -16 657 0 850 115 1388 693 2628 1672 3591 878 862 1988 1408
+           3189 1568 416 55 832 66 1244 31z" />
+                    <path d="M5060 10738 c-54 -15 -679 -379 -716 -417 -83 -84 -102 -207 -50
+           -309 54 -105 1149 -1998 1175 -2032 58 -73 186 -116 276 -91 46 12 662 365
+           715 409 68 57 105 179 81 267 -6 22 -274 497 -596 1055 -474 822 -594 1023
+           -631 1057 -68 64 -164 87 -254 61z" />
+                    <path d="M3942 9867 c-214 -130 -321 -208 -435 -317 -334 -319 -423 -636 -366
+           -1295 82 -942 549 -2201 1249 -3365 657 -1092 1446 -1996 2175 -2492 375 -255
+           608 -343 910 -343 202 0 370 40 606 145 110 50 365 185 374 199 3 6 -1137
+           1992 -1198 2088 -6 10 -17 8 -47 -7 -69 -35 -183 -69 -272 -80 -327 -40 -714
+           148 -1073 522 -444 462 -796 1143 -905 1753 -81 448 -20 809 175 1038 33 39
+           144 132 166 139 8 3 -217 401 -590 1049 -332 574 -606 1047 -610 1051 -4 5
+           -75 -34 -159 -85z" />
+                    <path d="M8220 5330 c-55 -7 -46 -3 -413 -214 -164 -94 -314 -186 -333 -204
+           -72 -69 -102 -185 -72 -273 17 -50 1155 -2026 1197 -2078 71 -90 212 -117 326
+           -62 86 41 614 347 655 380 56 45 90 120 90 202 0 37 -5 81 -12 96 -34 80
+           -1175 2043 -1206 2075 -61 64 -141 91 -232 78z" />
+                </g>
+            </svg>
+        </a>
+        </button>
+    </main>
+    {% include 'includes/footer.html' %}
+    <script src="{{ url_for('static', filename='js/materialize.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/slider.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/imask.min.js') }}"></script>
+    <script>
+            (async () => {
+                if ('loading' in HTMLImageElement.prototype) {
+                    const images = document.querySelectorAll("img.lazyload");
+                    images.forEach(img => {
+                        img.src = img.dataset.src;
+                    });
+                } else {
+                    const lazySizesLib = await import("{{ url_for('static', filename='js/lazysizes.min.js') }}");
+                    lazySizes.init();
+                }
+            })();
+        var date = new Date();
+        var currYear = date.getFullYear();
+        var currMonth = date.getMonth();
+        var currDay = date.getDate();
+        $(document).ready(function () {
+            window.setTimeout(function () {
+                document.querySelector('.preloader').classList.add("loaded_hiding");
+            }, 100);
+            window.setTimeout(function () {
+                document.querySelector('.preloader').classList.add("loaded");
+            }, 400);
+            $('.datepicker').datepicker({
+                minDate: new Date(currYear, currMonth, currDay),
+                firstDay: 1,
+                format: 'dd/mm/yyyy',
+                yearRange: [currYear, currYear + 1],
+                {% if g.locale == "uk" %}
+                i18n: {
+            cancel: 'Скасувати',
+            clear: 'Очистити',
+            done: 'Ок',
+            months: ["Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"],
+            monthsShort: ["Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"],
+            weekdays: ["Неділя", "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота"],
+            weekdaysShort: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+            weekdaysAbbrev: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"]
+        },
+            {% endif %}
+            });
+        });
+
+    </script>
+    <script>{% include 'js/websiteHelper.js' %}</script>
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

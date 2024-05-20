@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+{% endblock %}
+{% block title %}Create announce post{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('admin.announces') }}">
+    <i class="back material-icons">keyboard_backspace</i>
+</a>
+<form action="{{ url_for('admin.create_announce') }}" method="post" enctype="multipart/form-data">
+    <div class="row crud">
+        <div class="col s12 m6 l4">
+            <div class="file-field input-field">
+                <label class="title_image" for="title_image" id="title_label"></label>
+                <input type="file" id="title_image" name="image" onchange="addImage('title_image', 'title_label');"
+                    accept=".jpg, .jpeg, .png, .gif" required>
+            </div>
+        </div>
+        <div class="uk col s12 m6 l4">
+            <h3>Tasty</h3>
+            <div class="input-field">
+                <input type="text" name="uk_title" id="uk_title" placeholder="Type a title" required>
+                <label for="uk_title">Post title</label>
+            </div>
+            <div class="input-field">
+                <textarea class="materialize-textarea" name="uk_description" id="uk_description"
+                    placeholder="Type a description" required></textarea>
+                <label for="uk_description">Post description</label>
+            </div>
+        </div>
+        <div class="en col s12 m6 l4">
+            <h3>English</h3>
+            <div class="input-field">
+                <input type="text" name="en_title" id="en_title" placeholder="Type a title" required>
+                <label for="en_title">Post title</label>
+            </div>
+            <div class="input-field">
+                <textarea class="materialize-textarea" name="en_description" id="en_description"
+                    placeholder="Type a description" required></textarea>
+                <label for="en_description">Post description</label>
+            </div>
+        </div>
+        <p class="col s12 m6 l4" style="text-align:right;">
+            <label>
+                <input type="checkbox" id="isShow_true" onchange="toggle(['isShow_true','isShow_false']);"
+                    class="filled-in" checked="checked" name="isShow" />
+                <span>is Show</span>
+            </label>
+            <input type='hidden' id="isShow_false" value='off' name='isShow'>
+        </p>
+        <div class="col s12 m6 l4" style="text-align:right;">
+            <button class="btn" type="submit">Create</button>
+        </div>
+
+    </div>
+</form>
+
+{% endblock %}
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        $('select').formSelect();
+        document.getElementById('isShow_false').name = '';
+    });
+</script>
+{% endblock %}

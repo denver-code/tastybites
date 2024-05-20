@@ -1,0 +1,64 @@
+{% extends "website_base.html" %}
+{% block head %}
+<meta name="description"
+    content="Різноманітне меню із страв на будь-який смак. Регулярні сезонні оновлення. Персональне меню для банкетів.">
+<meta name="keywords" content="Салати, холодні закуски, перші страви, страви на вогні, гарніри, піца, десерти">
+{% endblock %}
+{% block title %}{{ _("Меню") }}{% endblock %}
+
+{% set images = {'main': [url_for('static', filename='objects/Menu/1.jpg'),
+url_for('static', filename='objects/Menu/2.jpg')],
+'banquet': [], 'kids': [url_for('static', filename='objects/Menu/kids.jpeg')],
+'ribs': [url_for('static', filename='objects/Menu/ribs.jpg')]} %}
+
+{% block content %}
+<div class="bg">
+    <div class="wrapper">
+        <h1>{{ _('Меню') }}</h1>
+        <section>
+            <div class="page-title">
+                <div class="menu-title">
+                    <span data-filter=".type-main">
+                        {{ _('Основне') }}
+                    </span>
+                    <!-- <span data-filter=".type-banquet">
+                        {{ _('Банкет') }}
+                    </span>
+                    <span data-filter=".type-ribs">
+                        {{ _('Реберня') }}
+                    </span>
+                    <span data-filter=".type-kids">
+                        {{ _('Дитяче') }}
+                    </span> -->
+                </div>
+            </div>
+            <div class="row menu-container">
+                {% for image in images.main %}
+                    <img class="mix alt-menu type-main" src="{{ image }}" alt="Image main menu {{ loop.index }}">
+                {% endfor %}
+                <img class="mix alt-menu type-ribs" src="{{ images.ribs[0] }}" alt="Image ribs menu">
+                <img class="mix alt-menu type-kids" src="{{ images.kids[0] }}" alt="Image children menu">
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/mixitup.min.js') }}"></script>
+<script>
+    $(document).ready(function () {
+    });
+    var mixer = mixitup(document.querySelector(".menu-container"), {
+        load: {
+            filter: ".type-main",
+        },
+        animation: {
+            duration: 0,
+            nudge: false,
+            reverseOut: false,
+            effects: "fade"
+        },
+    });
+</script>
+{% endblock %}

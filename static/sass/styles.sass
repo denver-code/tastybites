@@ -1,0 +1,137 @@
+@import 'main', 'sidebar'
+
+body
+    overflow-x: hidden
+    display: flex
+    h1, h2
+        font-family: 'Montserrat Bold'
+    h3
+        font-family: 'Montserrat Bold'
+    p,span, li, td
+        font-family: 'Montserrat Regular'
+    main
+        position: relative
+        width: 100%
+        margin: 0 3vw 0 3vw
+        .header
+            display: flex
+            h1
+                font-family: 'Montserrat Bold'
+                text-align: left
+                font-size: 26px
+                margin: 20px 0 20px 0
+            a
+                button
+                margin-left: auto
+                margin-top: 33px
+        .table-list-container
+            margin-top: -10px
+            max-height: 75%
+            height: 100%
+            table
+                th
+                    font-family: 'Montserrat Bold'
+                    color: $table-head-text-color
+                    +adaptiv-font(15, 10)
+                    span
+                        cursor: pointer
+                td
+                    height: 8vh
+                    +adaptiv-font(15, 10)
+                i
+                    transform: translateY(3px)
+            .search-pagination
+                position: absolute
+                bottom: 0
+                width: 100%
+                display: flex
+                @media screen and ( max-width: 876px )
+                    bottom: -50px
+                input.search
+                    width: 100%
+                    max-width: 30vw
+                div.paginator-container
+                    display: flex
+                    margin-left: auto
+                    @media screen and ( max-width: 699px )
+                        margin: 0 auto
+                .jPaginateBack, .jPaginateNext,
+                    background-color: transparent
+                    color: $bg-color-2
+                    box-shadow: none
+                    &:hover, &:focus
+                        background-color: transparent
+                        box-shadow: none
+                    i
+                        margin-top: 12px
+                .pagination
+                    li
+                        &.active
+                            background-color: $bg-color-2
+        .modal
+            max-width: 500px
+            button
+                display: block
+                margin: 0 auto
+                margin-top: 40px
+            .buttons
+                display: flex
+        .row
+            text-align: left
+            margin-bottom: 0
+            margin-top: -10px
+            img
+                max-height: 350px
+            i
+                margin-left: 0
+            .carousel
+                margin-top: -100px
+                margin-bottom: -50px
+                max-width: 21vw
+                @media screen and ( max-width: 999px )
+                    max-width: 30vw
+                @media screen and ( max-width: 769px )
+                    max-width: 90vw
+                .file-field
+                    input
+                        display: none
+            .file-field
+                label
+                    left: 0
+                    display: block
+                    position: relative
+                    background: silver
+                    background-size: contain
+                    background-repeat: no-repeat
+                    background-position: center
+                    &.title_image
+                        z-index: 10
+                        width: 21vw
+                        height: 21vw
+                        line-height: 21vw
+                    &.gallery_image
+                        height: 12.5vw
+                    @media screen and ( max-width: 992px )
+                        &.title_image
+                            width: 30vw
+                            height: 30vw
+                        &.gallery_image
+                            height: 18vw
+                    @media screen and ( max-width: 769px )
+                        &.title_image
+                            width: 50vw
+                            height: 50vw
+                            margin: 0 auto
+                        &.gallery_image
+                            height: 25vw
+                    &.slider_image
+                        width: 75vw
+                        height: calc(75vw/2.5)
+                    img
+                        vertical-align: middle
+            &>button[type=submit]
+                max-width: 100px
+                text-align: right
+        .back
+            margin-top: 25px
+            font-size: 30px

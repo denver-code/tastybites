@@ -1,0 +1,35 @@
+{% extends "website_base.html" %}
+{% block head %}
+<meta name="description"
+    content="Різноманітне меню із страв на будь-який смак. Регулярні сезонні оновлення. Персональне меню для банкетів.">
+<meta name="keywords" content="Салати, холодні закуски, перші страви, страви на вогні, гарніри, піца, десерти">
+{% endblock %}
+{% block title %}{{ _("Меню") }}{% endblock %}
+
+{% block content %}
+
+<div class="bg">
+    <div class="wrapper">
+        <h1>{{ _("Меню")| upper }}</h1>
+        {% include "includes/menu.html" %}
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/mixitup.min.js') }}"></script>
+<script>
+    var mixer = mixitup(document.querySelector(".menu-container"), {
+        load: {
+            filter: ".type-id-{{ types[3]['uk_type'] }}",
+        },
+        animation: {
+            duration: 300,
+            nudge: false,
+            reverseOut: false,
+            effects: "fade"
+        },
+    });
+
+</script>
+{% endblock %}

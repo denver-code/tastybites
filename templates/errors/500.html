@@ -1,0 +1,14 @@
+{% extends "website_base.html" %}
+{% block head %}
+{% endblock %}
+{% block title %}{{ _('Помилка на сервері') }}{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+    <h1 class="center-align" style="font-size: 50px;">500</h1>
+    <h3 class="center-align">{{ _("Помилка на сервері") }}</h3>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>{% include 'js/websiteHelper.js' %}</script>
+{% endblock %}

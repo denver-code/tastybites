@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+{% endblock %}
+{% block title %}Create admin{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('admin.admins') }}">
+    <i class="back material-icons">keyboard_backspace</i>
+</a>
+<form action="{{ url_for('admin.create_admin') }}" method="post">
+    <input type="hidden" name="_method" value="PUT">
+    <div class="row crud">
+
+        <div class="input-field col s12 m6 l4">
+            <input type="text" id="username" name="username" placeholder="Type a admin username" required>
+            <label for="username">Username</label>
+        </div>
+        <div class="input-field col s12 m6 l4">
+            <input type="text" id="name" name="name" placeholder="Type a admin name">
+            <label for="name">Name</label>
+        </div>
+        <div class="input-field col s12 m6 l4">
+            <input type="text" id="lastname" name="lastname" placeholder="Type a admin lastname">
+            <label for="lastname">Lastname</label>
+        </div>
+        <div class="input-field col s12 m6 l4">
+            <input type="text" id="surname" name="surname" placeholder="Type a admin surname">
+            <label for="surname">Surname</label>
+        </div>
+        <div class="input-field col s12 m6 l4">
+            <input type="email" id="email" name="email" placeholder="Type a admin email" required>
+            <label for="email">Email</label>
+        </div>
+        <div class="input-field col s12 m6 l4">
+            <input type="text" id="password" name="password" placeholder="Type a admin password" required>
+            <label for="password">Password</label>
+        </div>
+    </div>
+    <div class="col s12 m6 l4" style="text-align:right;">
+        <button class="btn" type="submit">Create</button>
+    </div>
+
+</form>
+
+{% endblock %}

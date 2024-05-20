@@ -1,0 +1,26 @@
+<div class="slider center col s12" id="main-slider">
+    <div class="slider__wrapper">
+        <div class="slider__items">
+            {% for item in slider %}
+            <div class="slider__item">
+                <img class="responsive-img" src="{{ url_for('static', filename=item['image']) }}"
+                    alt="Slider image {{ loop.index }}">
+                <div class="slider__item_title">
+                    <h2>
+                        {{ info['language'][g.locale]['name'] }}
+                    </h2>
+                    <span>{{ item['language'][g.locale]['text'] }}</span>
+                    <div>
+                        <a href="{{ url_for('website.delivery') }}">
+                            <button class="btn col s6">{{ _('Замовити на доставку') }}</button>
+                        </a>
+                        <a class="modal-trigger" href="#modal_reserve">
+                            <button class="btn col s6">{{ _('Забронювати стіл') }}</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

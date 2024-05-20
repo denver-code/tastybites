@@ -1,0 +1,52 @@
+{% extends "website_base.html" %}
+{% block head %}
+{% endblock %}
+{% block title %}{{ _('Замовлення') }}{% endblock %}
+
+{% block content %}
+<div class="bg">
+    <div class="wrapper">
+        <section>
+            <div class="page-title">
+                <h1>{{ _("Дякуємо за замовлення! Ближчим часом з вами зв'яжеться оператор")| upper }}</h1>
+            </div>
+            <button class="btn order" onclick="window.location.href = '/';">{{ _('Повернутися на головну') }}</button>
+        </section>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let order = {{ order | safe }};
+    let orderItems = [];
+
+    for (let item of Object.entries(order.cart)) {
+        for (let dish of dishes) {
+            if (dish._id == item[0]) {
+                for (let categ of categories) {
+                    if (categ._id == dish.category) {
+                        orderItems.push({
+                            item_name: dish.language.uk.name,
+                            price: dish.price,
+                            item_category: categ.language.uk.name,
+                            quantity: item[1]
+                        });
+                    }
+                }
+            }
+        }
+    }
+
+    dataLayer.push({ ecommerce: null });
+    dataLayer.push({
+        event: "purchase",
+        ecommerce: {
+            transaction_id: order._id,
+            value: order.total,
+            currency: "UAH",
+            items: orderItems
+        }
+    })
+</script>
+{% endblock %}

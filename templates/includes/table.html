@@ -1,0 +1,77 @@
+<div id="tableID" class="table-list-container">
+    <table class="table-list" data-currentpage="1">
+        <thead>
+            {% for key, value in col_bodies[0].items() %}
+                {% if 'language' in key %}
+                    {% for field_k, field_v in value.items() %}
+                        {% for key_f, value_f in field_v.items() %}
+                            <th>
+                                <span class="sort" data-sort="{{ key_f }}_{{ field_k }}">
+                                    {{ key_f | capitalize }} {{ field_k | upper}}
+                                </span>
+                            </th>
+                        {% endfor %}
+                    {% endfor %}
+                {% else %}
+                <th>
+                    <span class="sort" data-sort="{{ key }}">{{ key | capitalize | replace('_', ' ') }}</span>
+                </th>
+                {% endif %}
+            {% endfor %}
+            <th><span>Edit/{% if name_page=='category' %}Open/{% endif %}Del</span></th>
+        </thead>
+        <tbody class="list">
+            {% for col_body in col_bodies %}
+            <tr>
+                {% for key, value in col_body.items() %}
+                    {% if 'language' in key %}
+                        {% for field_k, field_v in value.items() %}
+                            {% for key_f, value_f in field_v.items() %}
+                                <td class="{{ key_f }}_{{ field_k }}">{{ value_f }}</td>
+                            {% endfor %}
+                        {% endfor %}
+                    {% else %}
+                        {% if value is boolean and value == true %}
+                            <td class="{{ key }}"><i style="color:green;" class="material-icons true">done</i></td>
+                        {% elif value is boolean and value == false %}
+                            <td class="{{ key }}"><i style="color:red;" class="material-icons false">clear</i></td>
+                        {% else %}
+                            <td class="{{ key }}">{{ value }}</td>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                <td>
+                    {% set url = request.url %}
+                    <a {% if name_page=='category' %}href="#modal_edit" class="modal-trigger"
+                        onclick="editDataToModal(`{{col_body['code_name']}}`, {{col_body['language']}}, {{col_body['type']}}, `{{col_body['isShow']}}`, {{ types }});" {% else
+                        %}href='{{ url }}/{% if col_body["code_name"] %}{{col_body["code_name"]}}{% elif "admins" in url %}{{col_body["username"]}}{% else %}{{col_body["_id"]}}{% endif %}'
+                        {% endif %}>
+                        <i style="color: gray;" class="material-icons">create</i>
+                    </a>
+                    {% if name_page=='category' %}
+                    <a href="{{ url }}/{{col_body['code_name']}}">
+                        <i style="color: green;margin:auto 5px auto 5px;" class="material-icons">menu_open</i>
+                    </a>
+                    {% endif %}
+                    <a class="modal-trigger" href="#modal_del"
+                        onclick="deleteDataToModal(`{% if col_body['code_name'] %}{{col_body['code_name']}}{% elif 'admins' in url %}{{col_body['username']}}{% else %}{{col_body['_id']}}{% endif %}`, '{{ url }}');">
+                        <i style="color: red;" class="material-icons">delete_forever</i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="search-pagination">
+        <input class="search" id="search" placeholder="Search">
+        <div class="paginator-container">
+            <button type="button" class="jPaginateBack btn">
+                <i class="material-icons">keyboard_arrow_left</i>
+            </button>
+            <ul class="pagination"></ul>
+            <button type="button" class="jPaginateNext btn">
+                <i class="material-icons">keyboard_arrow_right</i>
+            </button>
+        </div>
+    </div>
+</div>

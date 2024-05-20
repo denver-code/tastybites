@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+{% endblock %}
+{% block title %}Edit reservation{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('admin.reservations') }}">
+    <i class="back material-icons">keyboard_backspace</i>
+</a>
+{% set url = url_for(request.endpoint, **request.view_args) %}
+<form action="{{ url }}" method="post">
+    <input type="hidden" name="_method" value="PUT">
+    <div class="row crud">
+        <div class="col s12 m6">
+            <div class="input-field">
+                <input type="text" id="client_name" value="{{ data['client_name'] }}" readonly>
+                <label for="client_name">Client name</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="client_phone" value="{{ data['client_phone'] }}" readonly>
+                <label for="client_phone">Client phone</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="client_comment" value="{{ data['client_comment'] }}" readonly>
+                <label for="client_comment">Client comment</label>
+            </div>
+        </div>
+        <div class="col s12 m6">
+            <div class="input-field">
+                <input type="number" id="people_count" value="{{ data['people_count'] }}" readonly>
+                <label for="people_count">People count</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="date" value="{{ data['date'] }}" readonly>
+                <label for="date">Date</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="sentAt" value="{{ data['sentAt'] }}" readonly>
+                <label for="sentAt">Sent At</label>
+            </div>
+        </div>
+        <div class="col s6"></div>
+        <div class="row col s6">
+            <div class="col s6">
+                <label>
+                    <input type="checkbox" id="isAccepted_true" onchange="toggleAccepted(['isAccepted_true','isAccepted_false']);"
+                        class="filled-in" {% if data['isAccepted'] == true %}checked="checked"{% endif %} name="isAccepted"/>
+                    <span>is Accepted</span>
+                </label>
+                <input type='hidden' id="isAccepted_false" value='off' name='isAccepted'>
+            </div>
+            <div class="col s6" style="text-align:right;">
+                <button class="btn" type="submit">Save</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        $('select').formSelect();
+        document.getElementById('isAccepted_false').name = '';
+    });
+    function toggleAccepted(data) {
+        let input_true = document.getElementById(data[0]);
+        let input_false = document.getElementById(data[1]);
+        if (input_true.checked) {
+            input_false.name = ""
+        } else {
+            input_false.name = "isAccepted"
+        }
+    }
+</script>
+{% endblock %}

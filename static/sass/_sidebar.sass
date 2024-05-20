@@ -1,0 +1,30 @@
+body
+    div.sidebar
+        min-height: 100vh
+        max-width: 250px
+        min-width: 200px
+        width: 100%
+        margin-right: auto
+        background-color: $bg-color-2
+        h2
+            margin: 45px 0 25px 0
+            font-family: 'MuseoModerno SemiBold'
+            color: #DEDDFF
+            +adaptiv-font(35,25)
+        ul
+            li
+                margin-left: 40px
+                line-height: 60px
+                i
+                    margin-right: 10px
+                    transform: translateY(6px)
+                    +adaptiv-font(26,16)
+                    color: $inactive-text-color
+                a
+                    +adaptiv-font(18,12)
+                    color: $inactive-text-color
+                    &.active
+                        font-family: 'Montserrat Bold'
+                        color: $text-color-2
+                        i
+                            color: $text-color-2

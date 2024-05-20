@@ -1,0 +1,22 @@
+{% extends "website_base.html" %}
+{% block head %}
+{% endblock %}
+{% block title %}{{ _('Контакти') }}{% endblock %}
+
+{% block content %}
+<div class="bg">
+    <div class="wrapper">
+        <section>
+            <div class="page-title">
+                <h1>{{ _("Контакти")| upper }}</h1>
+            </div>
+            <section class="container">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5040.879609490676!2d-0.43045528239746167!3d50.8230170355436!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4875a36a5aaa2779%3A0x9380ddbe63466dc7!2sNorthbrook%20College!5e0!3m2!1sen!2suk!4v1713529165799!5m2!1sen!2suk"
+                width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+             </section>
+        </section>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,547 @@
+@import 'website_main', 'navbar', 'slider', 'footer', 'modals'
+
+body
+    max-width: 1920px
+    background-color: $bg-color-1
+    margin: 0 auto
+    overflow-x: hidden
+    main
+        min-height: 84vh
+        .preloader
+            position: fixed
+            left: 0
+            top: 0
+            right: 0
+            bottom: 0
+            overflow: hidden
+            background-color: $bg-color-1
+            z-index: 10000
+            &.loaded_hiding
+                transition: 0.3s opacity
+                opacity: 0
+            &.loaded
+                display: none
+
+            &__image
+                position: relative
+                top: 50%
+                left: 50%
+                width: 200px
+                height: auto !important
+                margin-top: -85px
+                margin-left: -100px
+                text-align: center
+
+        .bg
+            min-height: 86vh
+            @media screen and ( min-width: 899px )
+                background: url('../images/bgl.png') top left repeat-y, url('../images/bgr.png') top right repeat-y
+        img:not(.responsive-img)
+            max-width: 100%
+            height: 100%
+            object-fit: cover
+        video
+            max-width: 100%
+            height: 100%
+        h2
+            font-family: "Ruslan Regular"
+            color: $text-color-2
+        h3
+            font-family: 'Montserrat Bold'
+            color: $accent-color
+        span
+            font-family: "Montserrat Bold"
+            color: $text-color-2
+            +adaptiv-font(40,30)
+        button#call-btn
+            z-index: 9999
+            position: fixed
+            bottom: 100px
+            right: 50px
+            display: block
+            margin-left: auto
+            border-radius: 50%
+            width: auto
+            padding: 0
+            transform: scale(150%)
+            svg g
+                fill: #fff
+            &:hover
+                svg g
+                    fill: $accent-color
+
+        .wrapper
+            max-width: 72vw
+            margin: 0 auto
+            padding: 120px 0 120px 0
+            +adaptiv-font(30, 20)
+            @media screen and ( max-width: 999px )
+                max-width: 85vw
+            @media screen and ( max-width: 800px )
+                max-width: 95vw
+            h1
+                font-family: "Montserrat Bold"
+                color: $accent-color
+                +adaptiv-font(40, 30)
+            p.page-description
+                font-family: "Montserrat Regular"
+                margin: 30px 10% 40px 10%
+                @media screen and ( max-width: 599px )
+                    margin: 30px 5% 30px 5%
+                    text-align: center
+            //* Index
+            .page-description
+                text-align: center
+            .index-holls-title
+                text-align: center
+                margin-bottom: 30px
+                span
+                    font-family: "Montserrat Medium"
+                    text-transform: capitalize
+                    margin-right: 10px
+                    color: $accent-color
+                    cursor: pointer
+                    white-space: nowrap
+                    +adaptiv-font(20, 15)
+                    &.mixitup-control-active
+                        border-bottom: 2px solid $accent-color
+            .index-holls-container
+                &.main_holl
+                    @media screen and (min-width: 700px)
+                        height: 100%
+                        max-height: 700px
+                        grid-template-columns: repeat(2, 1fr)
+                        grid-template-rows: repeat(7, 1fr)
+                        div
+                            &:nth-child(2)
+                                grid-column-start: 2
+                                grid-column-end: 2
+                            &:nth-child(3)
+                                grid-column-start: 2
+                                grid-column-end: 2
+                            &:nth-child(4)
+                                display: none
+                            &:nth-child(5)
+                                grid-column-start: 2
+                                grid-column-end: 2
+                                grid-row-start: 7
+                                grid-row-end: 8
+                &.banquet_holl
+                    @media screen and (min-width: 700px)
+                        direction: rtl
+                        height: 100%
+                        max-height: 700px
+                        grid-template-columns: repeat(2, 1fr)
+                        grid-template-rows: repeat(8, 1fr)
+                        div
+                            &:first-child
+                                grid-row-end: 8
+                            &:nth-child(2)
+                                grid-row-end: 5
+                            &:nth-child(3)
+                                grid-row-start: 5
+                                grid-row-end: 9
+                            &:nth-child(4)
+                                display: none
+                            &:nth-child(5)
+                                grid-column-start: 1
+                                grid-column-end: 2
+                                grid-row-start: 8
+                                grid-row-end: 8
+                &.ribs_holl
+                    @media screen and (min-width: 700px)
+                        height: 100%
+                        max-height: 700px
+                        grid-template-columns: repeat(2, 1fr)
+                        grid-template-rows: repeat(8, 1fr)
+                        div
+                            &:first-child
+                                grid-row-start: 1
+                                grid-row-end: 5
+                            &:nth-child(2)
+                                grid-column-start: 1
+                                grid-column-end: 2
+                                grid-row-start: 5
+                                grid-row-end: 9
+                            &:nth-child(3)
+                                grid-column-start: 2
+                                grid-column-end: 3
+                                grid-row-start: 1
+                                grid-row-end: 5
+                            &:nth-child(4)
+                                grid-column-start: 2
+                                grid-column-end: 3
+                                grid-row-start: 5
+                                grid-row-end: 9
+                            &:nth-child(5)
+                                display: none
+                &.children_room
+                    @media screen and (min-width: 700px)
+                        height: 100%
+                        max-height: 700px
+                        grid-template-columns: repeat(2, 1fr)
+                        grid-template-rows: repeat(2, 1fr)
+                        div
+                            &:first-child
+                                grid-column-start: 1
+                                grid-column-end: 2
+                                grid-row-start: 1
+                                grid-row-end: 2
+                            &:nth-child(2)
+                                grid-column-start: 2
+                                grid-column-end: 3
+                                grid-row-start: 1
+                                grid-row-end: 2
+                            &:nth-child(3), &:nth-child(4), &:nth-child(5)
+                                display: none
+                display: grid
+                grid-template-columns: repeat(3, 1fr)
+                grid-template-rows: repeat(6, 1fr)
+                grid-gap: 15px
+                height: 35vw
+                max-height: 500px
+                padding: 5px
+                @media screen and ( max-width: 699px )
+                    grid-template-columns: repeat(2, 1fr)
+                    grid-template-rows: 45vw 25vw 10vw
+                    height: 60%
+                    max-height: 1000px
+                div
+                    &:first-child
+                        grid-column-start: 1
+                        grid-column-end: 2
+                        grid-row-start: 1
+                        grid-row-end: 7
+                        @media screen and ( max-width: 699px )
+                            grid-column-start: 1
+                            grid-column-end: 3
+                            grid-row-start: 1
+                            grid-row-end: 2
+                    &:nth-child(2)
+                        grid-column-start: 2
+                        grid-column-end: 3
+                        grid-row-start: 1
+                        grid-row-end: 4
+                        @media screen and ( max-width: 699px )
+                            grid-column-start: 1
+                            grid-column-end: 2
+                            grid-row-start: 2
+                            grid-row-end: 3
+                    &:nth-child(3)
+                        grid-column-start: 2
+                        grid-column-end: 3
+                        grid-row-start: 4
+                        grid-row-end: 7
+                        @media screen and ( max-width: 699px )
+                            grid-column-start: 2
+                            grid-column-end: 3
+                            grid-row-start: 2
+                            grid-row-end: 3
+                    &:nth-child(4)
+                        grid-column-start: 3
+                        grid-column-end: 4
+                        grid-row-start: 1
+                        grid-row-end: 6
+                        @media screen and ( max-width: 699px )
+                            display: none
+                    &:nth-child(5)
+                        grid-column-start: 3
+                        grid-column-end: 4
+                        grid-row-start: 6
+                        grid-row-end: 7
+                        .button
+                            background-color: $accent-color
+                            border-radius: 10px
+                            text-align: center
+                            display: table
+                            max-height: 70px
+                            height: 100%
+                            width: 100%
+                            a
+                                font-family: 'Montserrat Medium'
+                                color: $text-color-2
+                                display: table-cell
+                                vertical-align: middle
+                                +adaptiv-font(22,12)
+                        @media screen and ( max-width: 699px )
+                            grid-column-start: 1
+                            grid-column-end: 3
+                            grid-row-start: 3
+                            grid-row-end: 4
+                    img
+                        width: 100%
+                        object-fit: cover
+            .index-holl
+                margin-top: 50px
+                .title-image
+                    max-height: 600px
+                    height: 100vh
+                    img, video
+                        max-width: 95%
+                        min-width: 95%
+                        height: 100%
+                .title
+                    margin-top: 150px
+                    h3
+                        text-align: center
+                        +adaptiv-font(40,30)
+                .description
+                    p
+                        text-align: center
+                        font-family: 'Montserrat Regular'
+                        +adaptiv-font(20,15)
+                
+                @media screen and ( max-width: 699px )
+                    text-align: center
+                    margin: 0 auto
+                    h3, p
+                        text-align: center
+                    .title-image
+                        max-height: 500px
+                        img, video
+                            margin: 0 auto
+                    .description
+                        margin: 0 auto
+            .reviews
+                @media screen and (min-width: 700px)
+                    margin-top: -250px
+                .slider
+                    width: auto
+                    .slider__wrapper
+                        height: 100%
+                        background-color: transparent
+                    .slider__items
+                        img
+                            height: 100%
+                            object-fit: contain
+                            filter: brightness(95%)
+                            max-height: 800px
+                    .slider__indicators
+                        bottom: 30px !important
+            //* Announces
+            .announce-container
+                .col
+                    height: 100%
+                    margin-top: 20px
+                    img
+                        display: block
+                        margin: 0 auto
+                        max-width: 100%
+                        // width: 100%
+                        max-height: 800px
+                        height: 30vw
+                        @media screen and ( max-width: 800px )
+                            height: 60vw
+                            max-height: 60vw
+                    p
+                        font-family: "Montserrat Regular"
+                        margin-top: 0
+                        +adaptiv-font(20,14)
+                        b
+                            font-family: "Montserrat Medium"
+                            +adaptiv-font(28,22)
+            //* Menu
+            .menu-title
+                text-align: center
+                margin-top: 15px
+                margin-bottom: 40px
+                span
+                    font-family: "Montserrat Medium"
+                    font-weight: 600
+                    color: $text-color-3
+                    padding: 0 5px 0 5px
+                    cursor: pointer
+                    +adaptiv-font(18,14)
+                    &.mixitup-control-active
+                        border-bottom: 2px solid $text-color-3
+            .menu-container
+                h4
+                    font-family: 'Montserrat Medium'
+                    font-weight: 600
+                    color: $accent-color
+                    +adaptiv-font(28,24)
+                .row
+                    margin-bottom: auto
+                span, p.name
+                    font-family: 'Montserrat Medium'
+                    color: $text-color-3
+                    +adaptiv-font(20,15)
+                p
+                    margin-top: -5px
+                    font-family: 'Montserrat Regular'
+                    +adaptiv-font(16,11)
+            //* Holls
+            .holl-menu
+                text-align: center
+                +adaptiv-font(40,30)
+            .holl-container
+                display: grid
+                grid-template-columns: 1fr 1fr
+                grid-template-rows: 50px minmax(100px, 300px) minmax(100px, 300px) 1fr
+                grid-gap: 25px
+                .holl-title
+                    grid-column-start: 1
+                    grid-column-end: 3
+                    grid-row-start: 1
+                    grid-row-end: 2
+                .holl-image_1
+                    grid-column-start: 1
+                    grid-column-end: 2
+                    grid-row-start: 2
+                    grid-row-end: 4
+                    @media screen and ( max-width: 699px )
+                        grid-column-end: 3
+                .holl-image_2
+                    grid-column-start: 2
+                    grid-column-end: 3
+                    grid-row-start: 2
+                    grid-row-end: 3
+                    img
+                        width: 100%
+                    @media screen and ( max-width: 699px )
+                        display: none
+                .holl-image_3
+                    grid-column-start: 2
+                    grid-column-end: 3
+                    grid-row-start: 3
+                    grid-row-end: 4
+                    img
+                        width: 100%
+                    @media screen and ( max-width: 699px )
+                        display: none
+                .holl-description
+                    grid-column-start: 1
+                    grid-column-end: 3
+                    grid-row-start: 4
+                    grid-row-end: 5
+                    text-align: center
+            //* Delivery
+            .delivery-title
+                text-align: center
+                max-width: 800px
+                margin: 0 auto
+                word-wrap: nowrap
+                .delivery-title-h3
+                    display: flex
+                    justify-content: space-evenly
+                    h3
+                        margin: auto 10px auto 10px
+                        cursor: pointer
+                        +adaptiv-font(28,16)
+                        &.active
+                            border-bottom: 2px solid $accent-color
+                .delivery-title-mobile
+                    button
+                        background-color: transparent
+                        box-shadow: none
+                        border: 1px solid #BCBCBC
+                        color: $text-color-3
+                        text-align: left
+                        &:hover
+                            color: $text-color-3
+                            background-color: transparent
+                    .dropdown-content
+                        li a
+                            font-family: 'Montserrat Medium'
+                            color: $text-color-3
+                    button
+                        display: none
+                        @media screen and ( max-width: 699px )
+                            margin: 0 auto
+                            display: block !important
+                            width: 80%
+                @media screen and ( max-width: 699px )
+                    .delivery-title-p
+                        display: none
+                span
+                    font-family: "Montserrat Medium"
+                    font-weight: 600
+                    color: $text-color-3
+                    margin: auto 5px auto 5px
+                    cursor: pointer
+                    +adaptiv-font(20,15)
+                    &.mixitup-control-active
+                        border-bottom: 2px solid $text-color-3
+            .delivery-container
+                text-align: center
+                display: flex
+                flex-direction: row
+                flex-wrap: wrap
+                justify-content: center
+                .dish
+                    width: 30%
+                    position: relative
+                    margin-top: 30px
+                    margin-bottom: 50px
+                    @media screen and ( max-width: 800px )
+                        width: 50%
+                    h4
+                        font-family: 'Montserrat Medium'
+                        font-weight: 600
+                        color: $accent-color
+                        margin-top: 5px
+                        +adaptiv-font(20,15)
+                    p
+                        font-family: 'Montserrat Regular'
+                        margin-bottom: 8px
+                        +adaptiv-font(18,13)
+                    span
+                        font-family: 'Montserrat Medium'
+                        color: $text-color-3
+                        +adaptiv-font(21,16)
+                    div
+                        img
+                            max-width: 400px
+                            max-height: 400px
+                            height: 21vw
+                            width: 21vw
+                            object-fit: cover
+                            filter: brightness(90%)
+                            transition: .6s
+                            @media screen and ( max-width: 800px )
+                                height: 40vw
+                                width: 40vw
+                        &:hover img
+                            filter: brightness(60%)
+                        .dish-detail
+                            position: absolute
+                            left: 50%
+                            top: 17vw
+                            transform: translate(-50%, -50%)
+                            font-family: 'Montserrat Medium'
+                            background-color: $accent-color
+                            color: $text-color-2
+                            text-transform: none
+                            height: 30pt
+                            line-height: 30pt
+                            padding: 0 25px
+                            border-radius: 10px
+                            opacity: 0
+                            transition: .6s
+                            +adaptiv-font(19,15)
+                            @media screen and ( max-width: 800px )
+                                top: 35vw
+                        &:hover .dish-detail
+                            opacity: 1
+            //  *Alt menu
+            .alt-menu
+                width:  75%
+                display: block
+                margin: 0 auto
+                text-align: center
+                @media screen and ( max-width: 1000px )
+                    width: 100%
+            // *Contacts
+            .container
+                margin-top: 50px
+                iframe
+                    display: block
+                    margin: 0 auto
+                    width: 100%
+                    min-height: 50vh
+                    height: 100%
+            button.order
+                display: block
+                margin: 0 auto
+                margin-top: 50px
+

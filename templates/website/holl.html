@@ -1,0 +1,106 @@
+{% extends "website_base.html" %}
+
+{% set images = {'main': [url_for('static', filename='objects/Menu/1.jpg'),
+url_for('static', filename='objects/Menu/2.jpg'), url_for('static', filename='objects/Menu/3.jpg'),
+url_for('static', filename='objects/Menu/4.jpg'), url_for('static', filename='objects/Menu/5.jpg'),
+url_for('static', filename='objects/Menu/6.jpg'), url_for('static', filename='objects/Menu/7.jpg'),
+url_for('static', filename='objects/Menu/8.jpg'), url_for('static', filename='objects/Menu/9.jpg'),
+url_for('static', filename='objects/Menu/10.jpg'), url_for('static', filename='objects/Menu/11.jpg'),
+url_for('static', filename='objects/Menu/12.jpg'), url_for('static', filename='objects/Menu/13.jpg')],
+'banquet': [], 'kids': [url_for('static', filename='objects/Menu/kids.jpeg')],
+'ribs': [url_for('static', filename='objects/Menu/ribs.jpg')]} %}
+
+{% block head %}
+    {% if target_holl == 'children_room' %}
+            <meta name="description"
+                content="Простора дитяча кімната з великим лабіринтом, басейном з кульками, віртуальною реальністью, настільним футболом, ігровою приставкою та безліччю іграшок та розваг.">
+            <meta name="keywords"
+                content="дитяча кімната франківськ, розважальний центр, дитячий відпочинок, ігрова кімната, дитячі дні народження">
+        {% elif target_holl == 'ribs_holl' %}
+            <meta name="description" content="Апетитні страви приготовлені на вогні. М'ясо, ребра та піца на дровах.">
+            <meta name="keywords" content="Реберня франківськ, страви на мангалі, ребра на вогні, страви з м'яса та риби">
+    {% endif %}
+{% endblock %}
+{% block title %}
+    {% if target_holl == 'children_room'%}
+        {{ _('Дитяча кімната "Багата Хатинка"') }}
+    {% elif target_holl == 'ribs_holl' %}
+        {{ _('Реберня') }}
+    {% elif target_holl == 'main_holl' %}
+        {{ _('Основний зал') }}
+    {% elif target_holl == 'banquet_holl' %}
+        {{ _('Банкетний зал') }}
+    {% endif %}
+{% endblock %}
+{% from 'includes/holls.html' import holls %}
+
+{% set ns = namespace(holl='') %}
+
+{% for item in holls %}
+{% if item['code_name'] == target_holl %}
+{% set ns.holl = holls[loop.index-1] %}
+{% endif %}
+{% endfor %}
+
+{% block content %}
+
+<div class="bg">
+    <div class="wrapper">
+        <section class="holl-container">
+            <div class="holl-title">
+                <h1>{{ ns.holl['language'][g.locale]['name'] | upper }}</h1>
+            </div>
+            <div class="holl-image_1">
+                <img loading="lazy" class="lazyload" data-src="{{ ns.holl['gallery'][0] }}" alt="{{ ns.holl['language'][g.locale]['name'] }} image">
+            </div>
+            <div class="holl-image_2">
+                <img loading="lazy" class="lazyload" data-src="{{ ns.holl['gallery'][1] }}" alt="{{ ns.holl['language'][g.locale]['name'] }} image">
+            </div>
+            <div class="holl-image_3">
+                <img loading="lazy" class="lazyload" data-src="{{ ns.holl['gallery'][2] }}" alt="{{ ns.holl['language'][g.locale]['name'] }} image">
+            </div>
+            <div class="holl-description">
+                <p>
+                    {{ ns.holl['language'][g.locale]['description'] }}
+                </p>
+                {% if target_holl == 'children_room' %}
+                <div>
+                    <h3 class="center">{{ _('Прайс') }}</h3>
+                    <p>{{ _('- 1 год: 50 GBP (45 GBP - для гостей ресторану)') }}</p>
+                    <p>{{ _('- безліміт: 250 GBP (200 GBP - для гостей ресторану)') }}</p>
+                    <p>{{ _('- оренда: 3000 GBP (у вихідні)') }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+      
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    {% if target_holl == 'children_room' %}
+        let children_categories = []
+        {% for item in categories %}
+            {% if 7 in item['type'] %}
+            children_categories.push("{{ item['language'][g.locale]['name'] | safe | replace(' ', '_')}}")
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</script>
+<script src="{{ url_for('static', filename='js/mixitup.min.js') }}"></script>
+<script>
+    var mixer = mixitup(document.querySelector(".menu-container"), {
+        load: {
+            filter: `{% if target_holl != 'children_room' %}.type-id-{{ types[3]['_id'] }}{% else %}.category-${children_categories[0]}{% endif %}`,
+        },
+        animation: {
+            duration: 300,
+            nudge: false,
+            reverseOut: false,
+            effects: "fade"
+        },
+    });
+
+</script>
+{% endblock %}

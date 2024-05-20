@@ -1,0 +1,188 @@
+{% extends "website_base.html" %}
+{% block head %}
+    <meta name="description" content="Доставимо страви гарячими вчасно.  Доставка з 10:00-22:30.">
+    <meta name="keywords" content="доставка їжі франківськ, доставка обідів, в офіс, на дім, ">
+{% endblock %}
+{% block title %}{{ _('Доставка їжі в Івано-Франківську') }}{% endblock %}
+
+{% set type = request.args['type'] %}
+
+{% block content %}
+
+{% if not type %}
+{% set type = types[0]['_id'] %}
+{% endif %}
+<div class="bg">
+    <div class="wrapper">
+        <div class="delivery-title">
+            <h1 style="display: none;">{{ _("Доставка їжі") | upper }}</h1>
+            <div class="delivery-title-h3">
+                <a href="?type={{ types[0]['uk_type'] }}">
+                    <h3 class="{% if types[0]['uk_type'] == type %}active{% endif %}">{{ types[0][g.locale+'_type'] }}
+                    </h3>
+                </a>
+                
+                <!-- Hide other types 
+                
+                <a href="?type={{ types[1]['uk_type'] }}">
+                    <h3 class="{% if types[1]['uk_type'] == type %}active{% endif %}">{{ types[1][g.locale+'_type'] }}
+                    </h3>
+                </a>
+                <a href="?type={{ types[2]['uk_type'] }}">
+                    <h3 class="{% if types[2]['uk_type'] == type %}active{% endif %}">{{ types[2][g.locale+'_type'] }}
+                    </h3>
+                </a>
+                -->
+            </div>
+            <p class="delivery-title-p">
+                <span data-filter="all">{{ _('Всі') }}</span>
+                {% for item in categories %}
+                {% if type in item['type'] %}
+                <span data-filter=".{{ item['language'][g.locale]['name'] | replace(' ', '_')}}">{{
+                    item['language'][g.locale]['name'] }}</span>
+                {% endif %}
+                {% endfor %}
+            </p>
+            <div class="input-field delivery-title-mobile">
+                <button class='dropdown-trigger btn' href='#' data-target='dropdown-dish'>{{ _('Всі') }}</button>
+
+                <ul id='dropdown-dish' class='dropdown-content'>
+                    <li><a href="#!" data-filter="all">{{ _('Всі') }}</a></li>
+                    {% for item in categories %}
+                    {% if type in item['type'] %}
+                    <li>
+                        <a data-filter=".{{ item['language'][g.locale]['name'] | replace(' ', '_')}}">{{
+                            item['language'][g.locale]['name'] }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="delivery-container">
+            {% for category in categories %}
+            {% if category["count"] != 0 %}
+            {% for dish in dishes %}
+            {% if category['_id'] == dish['category'] %}
+            <div class="mix {{ category['language'][g.locale]['name'] | replace(' ', '_') }} dish">
+                <div>
+                    <img class="responsive-img lazyload" loading="lazy"
+                        data-src="{{ url_for('static', filename=dish['image']) }}" alt="">
+                    <a class="dish-detail btn modal-trigger" onclick="dataToModal({{dish}});" href="#modal_dish">{{
+                        _('Детальніше') }}</a>
+                </div>
+                <h4>{{ dish['language'][g.locale]['name'] }}</h4>
+                <p>{{ dish['language'][g.locale]['ingredients'] }}</p>
+                <span>{{ dish['price'] }} GBP</span>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div id="modal_dish" class=" row modal">
+    <i class="material-icons close" onclick="$('#modal_dish').modal('close');">close</i>
+    <div class="modal-image col s12 m6">
+        <img id="dishImage" loading="lazy" class="lazyload" data-src="" alt="">
+    </div>
+    <div class="modal-description col s12 m6">
+        <h3 id="dishName"></h3>
+        <b><span id="dishWeight"></span><span id="dishWeightType"></span></b>
+        <p id="dishIngredients"></p>
+        <p id="dishDescription"></p>
+        <p><b><span id="dishPrice"></span> {{ _('GBP') }}</b></p>
+        <div id="cart-buttons"></div>
+    </div>
+</div>
+<input  id="fake-input" type="hidden" step="1" min="1" max="100" value="1">
+
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/mixitup.min.js') }}"></script>
+<script>
+    $(document).ready(function () {
+        if ('{{type}}') {
+            window.scrollTo(slider.offset().top + slider.height() + 30, slider.offset().top + slider.height() + 30);
+        }
+        $('.dropdown-trigger').dropdown(
+            {
+                onCloseEnd: function (button) {
+                    let text = $( ".mixitup-control-active" ).html();
+                    console.log(text)
+                    let res = text.replace('\n',"");
+                    button.innerText = res;
+                }
+            }
+        );
+    });
+    var mixer2 = mixitup(document.querySelector(".delivery-container"), {
+        load: {
+            filter: "all",
+        },
+        animation: {
+            duration: 300,
+            nudge: false,
+            reverseOut: false,
+            effects: "fade"
+        },
+    });
+    function dataToModal(data) {dishWeightType
+        document.getElementById("dishImage").src = {{ url_for('static', filename = '') }} +data.image;
+        document.getElementById("dishName").innerText = data.language['{{g.locale}}'].name;
+        document.getElementById("dishWeight").innerText = data.weight;
+        document.getElementById("dishIngredients").innerText = data.language['{{g.locale}}'].ingredients;
+        document.getElementById("dishDescription").innerText = data.language['{{g.locale}}'].description;
+        document.getElementById("dishPrice").innerText = data.price;
+
+        if(data.isCm == false) document.getElementById("dishWeightType").innerText = " {{_('грамів')}}"; 
+        else document.getElementById("dishWeightType").innerText = "";
+
+        let categoryName = '';
+        for (let item of categories) {
+            if (item._id == data.category) {
+                categoryName = item.language.uk.name;
+            }
+        }
+        dataLayer.push({ecommerce: null});
+        dataLayer.push({
+            event: "view_item",
+            ecommerce: {
+                items: [{
+                    item_name: data.language.uk.name,
+                    price: data.price,
+                    item_category: categoryName
+                }]
+            }
+        })
+
+        let cartData = getDataCart();
+        let dishCartList = Object.keys(cartData);
+        let cartButtons = document.getElementById("cart-buttons");
+        cartButtons.innerHTML = '';
+        cartButtons.insertAdjacentHTML("afterbegin", `
+                        <button class="btn" id="cart-button" data-id="${data._id}" onclick="insertCart(this)">{{ _('У кошик') }}</button>
+                    `);
+        if (Object.keys(cartData).length > 0) {
+            for (let item of dishCartList) {
+                if (item == data._id) {
+                    cartButtons.innerHTML = ''
+                    cartButtons.insertAdjacentHTML("afterbegin", `
+                    <div class="dish-input-container">
+                        <input type="button" value="-" id="minus-dish-${item}" data-id="${item}" onclick="decrementValue('modal-dish-${item}', '${item}', this)"
+                            class="button-minus" data-field="${item}">
+                        <input type="number" step="1" min="1" max="100" value="${cartData[item]
+                        }" id="modal-dish-${item}"
+                            class="numbers-field" onkeyup="checkNum('${item}')" disabled>
+                        <input type="button" value="+" data-id="${item}" onclick="incrementValue('modal-dish-${item}', '${item}', this)"
+                            class="button-plus" data-field="${item}">
+                    </dev>
+                    `);
+                };
+            }
+        };
+    };
+</script>
+{% endblock %}

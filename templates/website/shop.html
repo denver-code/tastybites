@@ -1,0 +1,150 @@
+{% extends "website_base.html" %}
+{% block head %}
+    <meta name="description" content="Доставимо вчасно.  Доставка з 10:00-22:30.">
+    <meta name="keywords" content="доставка франківськ, доставка обідів, в офіс, на дім">
+{% endblock %}
+{% block title %}{{ _('Крамниця') }}{% endblock %}
+
+{% set type = types[2]['_id'] %}
+{% block content %}
+
+<div class="bg">
+    <div class="wrapper">
+        <div class="delivery-title">
+            <div class="delivery-title-h3">
+                <h1 class="{% if types[2]['_id'] == type %}active{% endif %}">{{ types[2][g.locale+'_type'] }}</h1>
+            </div>
+            <p class="delivery-title-p">
+                {% for item in categories %}
+                {% if type in item['type'] %}
+                <span data-filter=".{{ item['language'][g.locale]['name'] | replace(' ', '_')}}">{{
+                    item['language'][g.locale]['name'] }}</span>
+                {% endif %}
+                {% endfor %}
+            </p>
+            <div class="input-field delivery-title-mobile">
+                <button class='dropdown-trigger btn' href='#' data-target='dropdown-dish'>{{ _('Всі') }}</button>
+
+                <ul id='dropdown-dish' class='dropdown-content'>
+                    <li><a href="#!" data-filter="all">{{ _('Всі') }}</a></li>
+                    {% for item in categories %}
+                        {% if type in item['type'] %}
+                            <li>
+                                <a data-filter=".{{ item['language'][g.locale]['name'] | replace(' ', '_')}}">{{
+                                    item['language'][g.locale]['name'] }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="delivery-container">
+            {% for category in categories %}
+                {% if category["count"] != 0 %}
+                    {% for dish in dishes %}
+                        {% if category['_id'] == dish['category'] %}
+                            <div class="mix {{ category['language'][g.locale]['name'] | replace(' ', '_') }} dish">
+                                <div>
+                                    <img class="responsive-img lazyload" loading="lazy"
+                                        data-src="{{ url_for('static', filename=dish['image']) }}" alt="">
+                                    <a class="dish-detail btn modal-trigger" onclick="dataToModal({{dish}});" href="#modal_dish">{{
+                                        _('Детальніше') }}</a>
+                                </div>
+                                <h4>{{ dish['language'][g.locale]['name'] }}</h4>
+                                <p>{{ dish['language'][g.locale]['ingredients'] }}</p>
+                                <span>{{ dish['price'] }} GBP</span>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div id="modal_dish" class=" row modal">
+    <i class="material-icons close" onclick="$('#modal_dish').modal('close');">close</i>
+    <div class="modal-image col s12 m6">
+        <img id="dishImage" loading="lazy" class="lazyload" data-src="" alt="">
+    </div>
+    <div class="modal-description col s12 m6">
+        <h3 id="dishName"></h3>
+        <b><span id="dishWeight"></span> {{ _('грамів') }}</b>
+        <p id="dishIngredients"></p>
+        <p id="dishDescription"></p>
+        <p><b><span id="dishPrice"></span> {{ _('GBP') }}</b></p>
+        <div id="cart-buttons"></div>
+    </div>
+</div>
+<input  id="fake-input" type="hidden" step="1" min="1" max="100" value="1">
+
+{% endblock %}
+{% block scripts %}
+<script>
+    let shop_categories = []
+    {% for item in categories %}
+        {% if type in item['type'] %}
+            shop_categories.push(".{{ item['language'][g.locale]['name'] | safe | replace(' ', '_')}}")
+        {% endif %}
+    {% endfor %}
+</script>
+<script src="{{ url_for('static', filename='js/mixitup.min.js') }}"></script>
+<script>
+    $(document).ready(function () {
+        $('.dropdown-trigger').dropdown(
+            {
+                onCloseStart: function (button) {
+                    button.innerText = document.querySelector(".mixitup-control-active").innerText
+                }
+            }
+        );
+    });
+    
+
+    var mixer2 = mixitup(document.querySelector(".delivery-container"), {
+        load: {
+            filter: shop_categories[0],
+        },
+        animation: {
+            duration: 300,
+            nudge: false,
+            reverseOut: false,
+            effects: "fade"
+        },
+    });
+    function dataToModal(data) {
+        document.getElementById("dishImage").src = {{ url_for('static', filename = '') }} +data.image;
+        document.getElementById("dishName").innerText = data.language['{{g.locale}}'].name;
+        document.getElementById("dishWeight").innerText = data.weight;
+        document.getElementById("dishIngredients").innerText = data.language['{{g.locale}}'].ingredients;
+        document.getElementById("dishDescription").innerText = data.language['{{g.locale}}'].description;
+        document.getElementById("dishPrice").innerText = data.price;
+
+        let cartData = getDataCart();
+        let dishCartList = Object.keys(cartData);
+        let cartButtons = document.getElementById("cart-buttons");
+        cartButtons.innerHTML = '';
+        cartButtons.insertAdjacentHTML("afterbegin", `
+                        <button class="btn" id="cart-button" data-id="${data._id}" onclick="insertCart(this)">{{ _('У кошик') }}</button>
+                    `);
+        if (Object.keys(cartData).length > 0) {
+            for (let item of dishCartList) {
+                if (item == data._id) {
+                    cartButtons.innerHTML = ''
+                    cartButtons.insertAdjacentHTML("afterbegin", `
+                    <div class="dish-input-container">
+                        <input type="button" value="-" id="minus-dish-${item}" data-id="${item}" onclick="decrementValue('modal-dish-${item}', '${item}', this)"
+                            class="button-minus" data-field="${item}">
+                        <input type="number" step="1" min="1" max="100" value="${cartData[item]
+                        }" id="modal-dish-${item}"
+                            class="numbers-field" onkeyup="checkNum('${item}')">
+                        <input type="button" value="+" data-id="${item}" onclick="incrementValue('modal-dish-${item}', '${item}', this)"
+                            class="button-plus" data-field="${item}">
+                    </dev>
+                    `);
+                };
+            }
+        };
+    };
+</script>
+{% endblock %}

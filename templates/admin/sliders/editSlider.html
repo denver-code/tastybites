@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+{% endblock %}
+{% block title %}Create slider{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('admin.sliders') }}">
+    <i class="back material-icons">keyboard_backspace</i>
+</a>
+{% set url = url_for(request.endpoint, **request.view_args) %}
+<form action="{{ url }}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="_method" value="PUT">
+    <div class="row crud">
+        <div class="col s12">
+        <div class="file-field input-field">
+            <label class="slider_image" for="slider_image" id="slider_label"
+            style="background-image: url({{ url_for('static', filename=data['image']) }});"></label>
+            <input type="file" id="slider_image" onchange="addImage('slider_image', 'slider_label');"
+            accept=".jpg, .jpeg, .png, .gif">
+        </div>
+    </div>
+            <div class="input-field col s12 m6 l4">
+                <textarea class="materialize-textarea" id="uk_text" name="uk_text"
+                    placeholder="Type a slider uk text" required>{{ data['language']['uk']['text'] }}</textarea>
+                <label for="uk_text">Slider uk text</label>
+            </div>
+            <div class="input-field col s12 m6 l4">
+                <textarea class="materialize-textarea" id="en_text" name="en_text"
+                    placeholder="Type a slider en text" required>{{ data['language']['en']['text'] }}</textarea>
+                <label for="en_text">Slider en text</label>
+            </div>
+        <p class="col s12 m6 l6" style="text-align:right;">
+            <label>
+                <input type="checkbox" id="isShow_true" onchange="toggle(['isShow_true','isShow_false']);"
+                    class="filled-in" {% if data['isShow'] == true %}checked="checked"{% endif %} name="isShow"/>
+                <span>is Show</span>
+            </label>
+            <input type='hidden' id="isShow_false" value='off' name='isShow'>
+        </p>
+        <div class="col s12 m6 l6" style="text-align:right;">
+            <button class="btn" type="submit">Save</button>
+        </div>
+        
+    </div>
+</form>
+
+{% endblock %}
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        $('select').formSelect();
+        document.getElementById('isShow_false').name = '';
+    });
+</script>
+{% endblock %}

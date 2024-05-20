@@ -1,0 +1,28 @@
+{% extends "website_base.html" %}
+{% block head %}
+{% endblock %}
+{% block title %}{{ _('Анонси') }}{% endblock %}
+
+{% block content %}
+<div class="bg">
+    <div class="wrapper">
+        <section>
+            <div class="page-title">
+                <h1>{{ _("Анонси")| upper }}</h1>
+            </div>
+            <div class="announce-container row">
+                {% for item in announce %}
+                <div class="col s6 m4">
+                    <img loading="lazy" class="lazyload" data-src="{{ url_for('static', filename=item['image']) }}" alt="">
+                    <p class="announce-desc center-align">
+                        <b>{{ item['language'][g.locale]['title'] }}</b>
+                        <br>
+                        {{ item['language'][g.locale]['description'] }}
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+<section>
+    <div class="page-title">
+        <div class="menu-title">
+            {% if target_holl != 'children_room' %}
+                <span data-filter=".type-id-{{ types[3]['_id'] }}">
+                    {{ types[3][g.locale+'_type'] }}
+                </span>
+                <span data-filter=".type-id-{{ types[4]['_id'] }}">
+                    {{ types[4][g.locale+'_type'] }}
+                </span>
+                <span data-filter=".type-id-{{ types[5]['_id'] }}">
+                    {{ types[5][g.locale+'_type'] }}
+                </span>
+            {% else %}
+            {% for category in categories %}
+            {% if 7 in category['type'] %}
+            <span data-filter=".category-{{ category['language'][g.locale]['name'] }}">
+                {{ category['language'][g.locale]['name'] }}
+            </span>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+        <div class="row menu-container">
+            {% for category in categories %}
+            {% if category["count"] != 0 %}
+            <div class="col s12 m6 mix {% for categ in category['type'] %}type-id-{{ categ }} {% endfor %}">
+                <h4>{{ category['language'][g.locale]['name'] }}</h4>
+                <div class="row">
+                    {% for item in dishes %}
+                        {% if item['category'] == category['_id'] %}
+                            <div class="col s7">
+                                <p class="name">{{ item['language'][g.locale]['name'] }}</p>
+                                <p>({{ item['language'][g.locale]['ingredients'] }})</p>
+                            </div>
+                            <div class="col s5 center-align">
+                                <span>{{ item['weight'] }} {{_("г")}} |  {{ item['price'] }} {{_("GBP")}}</span>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+</section>

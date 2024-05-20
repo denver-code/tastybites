@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+{% endblock %}
+{% block title %}Edit dish{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('admin.dish_categories') }}">
+    <i class="back material-icons">keyboard_backspace</i>
+</a>
+{% set url = url_for(request.endpoint, **request.view_args) %}
+<form action="{{ url }}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="_method" value="PUT">
+    <div class="row crud">
+        <div class="col s12 m6 l4">
+            <div class="file-field input-field">
+                <label class="title_image" for="title_image" id="title_label"
+                    style="background-image: url({{ url_for('static', filename=data['image']) }});"></label>
+                <input type="file" id="title_image"
+                    onchange="addImage('title_image', 'title_label');" accept=".jpg, .jpeg, .png, .gif">
+            </div>
+            <div class="input-field" style="margin-top:40px;">
+                <input type="text" name="code_name" id="code_name" placeholder="Type a dish name"
+                    value="{{ data['code_name'] }}" required>
+                <label for="code_name">Dish code name</label>
+            </div>
+            <div class="input-field">
+                <select name="category">
+                    {% for col_body in data_categories %}
+                    {% if col_body['_id'] == data['category'] %}
+                    <option selected value={{ col_body['_id'] }} >{{ col_body['language']['uk']['name'] }}</option>
+                    {% else %}
+                    <option value={{ col_body['_id'] }}>{{ col_body['language']['uk']['name'] }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+                <label>Dish category</label>
+            </div>
+        </div>
+        <div class="uk col s12 m6 l4">
+            <h3>Tasty</h3>
+            <div class="input-field">
+                <input type="text" name="uk_name" id="uk_name" placeholder="Type a dish name"
+                    value="{{ data['language']['uk']['name'] }}" required>
+                <label for="uk_name">Dish name</label>
+            </div>
+            <div class="input-field">
+                <input type="text" name="uk_ingredients" id="uk_ingredients" placeholder="Type a dish ingredients"
+                    value="{{ data['language']['uk']['ingredients'] }}" required>
+                <label for="uk_ingredients">Dish ingredients</label>
+            </div>
+            <div class="input-field">
+                <textarea class="materialize-textarea" id="uk_description" name="uk_description"
+                    placeholder="Type a dish description"
+                    >{{ data['language']['uk']['description'] }}</textarea>
+                <label for="uk_description">Dish description</label>
+            </div>
+        </div>
+        <div class="en col s12 m6 l4">
+            <h3>English</h3>
+            <div class="input-field">
+                <input type="text" name="en_name" id="en_name" placeholder="Type dish name"
+                    value="{{ data['language']['en']['name'] }}" required>
+                <label for="en_name">Dish name</label>
+            </div>
+            <div class="input-field">
+                <input type="text" name="en_ingredients" id="en_ingredients" placeholder="Type a dish ingredients"
+                    value="{{ data['language']['en']['ingredients'] }}" required>
+                <label for="en_ingredients">Dish ingredients</label>
+            </div>
+            <div class="input-field">
+                <textarea class="materialize-textarea" id="en_description" name="en_description"
+                    placeholder="Type a dish description"
+                    >{{ data['language']['en']['description'] }}</textarea>
+                <label for="en_description">Dish description</label>
+            </div>
+        </div>
+        <div class="input-field col s12 m6 l4">
+            <input type="text" name="weight" id="weight" placeholder="Type a dish weight"
+                value="{{ data['weight'] }}" required>
+            <label for="weight">Dish weight</label>
+        </div>
+        <div class="input-field col s12 m6 l4">
+            <input type="number" name="price" id="price" placeholder="Type a dish price" min="1"
+                value="{{ data['price'] }}" step="0.01" required>
+            <label for="price">Dish price</label>
+        </div>
+        <p class="col s12 m6 l4" style="text-align:right;">
+            <label>
+                <input type="checkbox" id="isShow_true" onchange="toggle(['isShow_true','isShow_false']);"
+                    class="filled-in" {% if data['isShow'] == true %}checked="checked"{% endif %} name="isShow"/>
+                <span>is Show</span>
+            </label>
+            <input type='hidden' id="isShow_false" value='off' name='isShow'>
+        </p>
+        <div class="col s12 m6 l4" style="text-align:right;">
+            <button class="btn" type="submit">Save</button>
+        </div>
+
+    </div>
+</form>
+
+{% endblock %}
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        $('select').formSelect();
+        document.getElementById('isShow_false').name = '';
+    });
+</script>
+{% endblock %}
