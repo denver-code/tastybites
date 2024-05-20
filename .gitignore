@@ -65,3 +65,4 @@ static/objects/Announces
 
 .venv/
 .env
+.vercel
