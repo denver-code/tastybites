@@ -97,4 +97,4 @@ for extra_dir in extra_dirs:
                 extra_files.append(filename)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False, host="0.0.0.0", port=5000)
